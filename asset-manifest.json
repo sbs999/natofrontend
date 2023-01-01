@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/natofrontend/static/css/main.81307d8c.css",
+    "main.js": "/natofrontend/static/js/main.d3e9370b.js",
+    "index.html": "/natofrontend/index.html",
+    "main.81307d8c.css.map": "/natofrontend/static/css/main.81307d8c.css.map",
+    "main.d3e9370b.js.map": "/natofrontend/static/js/main.d3e9370b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.81307d8c.css",
+    "static/js/main.d3e9370b.js"
+  ]
+}
