@@ -12,13 +12,13 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <HashRouter>
+    <BrowserRouter>
     <Store>
       <>
     <App />
     <ToastContainer  autoClose={3000} hideProgressBar />
     </>
     </Store>
-    </HashRouter>
+    </BrowserRouter>
   </React.StrictMode>
 );
