@@ -64,7 +64,7 @@ const EachPersonForm: React.FC<{id: string}> = ({id}) => {
         <Input label='თანხა' name="money" id="money" type="number" placeholder='თანხა' />
         <Input label='დამატებით ინფორმაცია' name="info" id="info" type="text" placeholder='დამატებით ინფორმაცია' />
         <div className='grid place-content-center'>
-        <button disabled={submitStatus} type="submit" className='border-[1px] bg-[#2ecc71] p-[10px] rounded-[12px] text-black'>შენახვა</button>
+        <button disabled={submitStatus} type="submit" className='border-[1px] bg-[#2ecc71] p-[10px] px-[15px] rounded-[12px] text-black'>შენახვა</button>
         </div> 
         </Form>
       </Formik>

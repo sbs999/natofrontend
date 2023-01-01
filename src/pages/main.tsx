@@ -37,18 +37,18 @@ const Main = () => {
   
   return (
     <div className='flex justify-center flex-col items-center'>
-      <div onClick={() => navigate("/addPerson")} className='w-[250px]  text-[17px] bg-[#34495e] text-white p-[7px] flex justify-center rounded-[10px] cursor-pointer mt-[20px]'>
+      <div onClick={() => navigate("/addPerson")} className='w-[285px] text-[17px] bg-[#34495e] text-white p-[7px] flex justify-center rounded-[10px] cursor-pointer mt-[20px]'>
         <p>ადამიანის დამატება სიაში.</p>
       </div>
       <div>
         <div>
-          <input type="text" onChange={(e) => setSearch(e.target.value)}  className='border-[1px] mt-[30px] px-[10px] py-[10px] w-[270px] rounded-[10px] border-black' placeholder='გაფილტვრა'  />
+          <input type="text" onChange={(e) => setSearch(e.target.value)}  className='border-[1px] mt-[30px] px-[10px] py-[10px] w-[280px] rounded-[10px] border-black' placeholder='გაფილტვრა'  />
         </div>
       </div>
       <div className='mt-[10px]'>
       {state.map((d,index) => {
         return (
-       <div onClick={() => navigate(`/person/${d._id}`)} key={index} className='bg-[#ecf0f1] text-center  w-[270px]  text-[17px] mt-[5px] h-[50px] flex justify-center items-center cursor-pointer'>
+       <div onClick={() => navigate(`/person/${d._id}`)} key={index} className='bg-[#ecf0f1] text-center  w-[280px]  text-[17px] mt-[5px] h-[50px] flex justify-center items-center cursor-pointer'>
        {d.name}  {d.surname} - {d.money}ლ
       </div>
         )

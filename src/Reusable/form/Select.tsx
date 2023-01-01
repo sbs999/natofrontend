@@ -4,7 +4,7 @@ const  Select: React.FC<{label: string,name: string, id: string,children: JSX.El
     const [Field,meta] = useField(props);
   return (
    <div className='mt-[10px]'>
-   <label htmlFor={props.id} className="text-[18px] mb-[10px]" >{label}</label>
+   <label htmlFor={props.id} className="text-[19px] mb-[10px]" >{label}</label>
    <select  className='w-[100%]  h-[40px] rounded-[10px] border-[1px] border-black mt-[10px]' {...Field} {...props} >
     {props.children}
    </select>
