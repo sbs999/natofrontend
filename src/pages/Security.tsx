@@ -34,7 +34,7 @@ const Security = () => {
     validationSchema={validateSchema}
     >
      <Form>
-      <Input label='პაროლი' name="password" id="password" type="text" placeholder='პაროლი' />
+      <Input label='პაროლი' name="password" id="password" type="number" placeholder='პაროლი' />
       <div className='grid place-content-center'>
       <button  type="submit" className='border-[1px] bg-[#2ecc71] p-[10px] rounded-[12px] text-white'>შესვლა</button>
       </div> 

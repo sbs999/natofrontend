@@ -56,11 +56,9 @@ const Main = () => {
       </div>
       
       <div className='mt-[30px]'>
-        {totalMoney &&
       <div className='mb-[15px] text-center'>
         <p>მთლიანობაში ვალი - {totalMoney}ლ</p>
       </div>
-}
         <div>
           <input type="text" onChange={(e) => setSearch(e.target.value)}  className='border-[1px]  px-[10px] py-[10px] w-[280px] rounded-[10px] border-black' placeholder='გაფილტვრა'  />
         </div>

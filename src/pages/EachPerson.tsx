@@ -22,7 +22,7 @@ const EachPerson = () => {
          <div className='mt-[50px]'>შეცდომაა,თავიდან სცადეთ! არა არის ასეთი ადამიანი!</div>
         ) : (
         <div className='mt-[30px] '>
-          <div className='flex flex-col items-center justify-center'>
+          <div className='flex flex-col items-center justify-center mx-[6px] text-center'>
            <div className='text-[22px]'>{state[0].name} {state[0].surname}</div>
            <div className='text-[22px] mt-[10px]'>ვალი - {state[0].money}ლ </div>
            {state[0].mobNumber && <div className='mt-[10px]'>ტელეფონის ნომერი - {state[0].mobNumber}</div>}

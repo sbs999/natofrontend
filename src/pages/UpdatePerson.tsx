@@ -12,7 +12,8 @@ const validateSchema =  Yup.object({
     surname: Yup.string().min(3,"მინიმუმ სამი ასო გვარი!").required("გვარი სავალდებულოა!"),
     money: Yup.string().required("თანხა სავალდებულოა!"),
     mobNumber: Yup.string(),
-    info: Yup.string(),
+    personInfo: Yup.string(),
+    updateInfo: Yup.string()
   })
   
 const UpdatePerson = () => {
@@ -26,7 +27,7 @@ const UpdatePerson = () => {
     setState(persons.filter(p => p._id.toString() === personId));
     },[persons])
 
-    const submitHandler = async (values: {name: string,mobNumber: string,info: string,surname: string,money: number}) => {
+    const submitHandler = async (values: {name: string,mobNumber: string,personInfo: string,updateInfo: string,surname: string,money: number}) => {
       if(!userStatus) {
         changeUserStatus(false);
         navigate("/");
@@ -56,7 +57,8 @@ const UpdatePerson = () => {
           name: state[0].name,
           mobNumber: state[0].mobNumber,
           surname: state[0].surname,
-          info: state[0].info,
+          personInfo: state[0].info,
+          updateInfo: "",
           money: state[0].money
         }}
         onSubmit={submitHandler}
@@ -65,9 +67,11 @@ const UpdatePerson = () => {
          <Form>
           <Input label='სახელი' name="name" id="name" type="text" placeholder='სახელი' />
           <Input label='გვარი' name="surname" id="surname" type="text" placeholder='გვარი' />
+          <Input label='ინფორმაცია ადამიანზე' name="personInfo" id="personInfo" type="text" placeholder='ინფორმაცია ადამიანზე' />
           <Input label='თანხა' name="money" id="money" type="number" placeholder='თანხა' />
           <Input label='ნომერი' name="mobNumber" id="mobNumber" type="number" placeholder='ნომერი' />
-          <Input label='დამატებით ინფორმაცია' name="info" id="info" type="text" placeholder='დამატებით ინფორმაცია' />
+          <Input label='ინფორმაცია განახლებაზე' name="updateInfo" id="updateInfo" type="text" placeholder='ინფორმაცია განახლებაზე' />
+          {/* <Input label='დამატებით ინფორმაცია' name="info" id="info" type="text" placeholder='დამატებით ინფორმაცია' /> */}
           <div className='grid place-content-center'>
           <button disabled={submitStatus} type="submit" className='border-[1px] bg-[#2ecc71] p-[10px] rounded-[12px] text-white'>დამატება</button>
           </div> 

@@ -11,7 +11,8 @@ interface PersonType {
   name: string,
   surname: string,
   money: string,
-  info?: string,
+  personInfo: string,
+  debtInfo: string,
   mobNumber?: string
 }
 const validateSchema =  Yup.object({
@@ -19,7 +20,8 @@ const validateSchema =  Yup.object({
     surname: Yup.string().min(3,"მინიმუმ სამი ასო გვარი!").required("გვარი სავალდებულოა!"),
     money: Yup.string().required("თანხა სავალდებულოა!"),
     mobNumber: Yup.string(),
-    info: Yup.string(),
+    personInfo: Yup.string(),
+    debtInfo: Yup.string()
   })
   
   const AddFormSchema: React.FC<{histroyStatus: {status: string,id: string},name: string,mobNumber: string,surname:string,info: string}> = ({histroyStatus,name,mobNumber,surname,info}) => {
@@ -28,7 +30,6 @@ const validateSchema =  Yup.object({
     const {postData} = useAxios();
     const [submitStatus,setSubmitStatus] = useState(false);
     const submitHandler = async (values: PersonType) => {
-     
       if(!userStatus) {
         changeUserStatus(false);
         navigate("/");
@@ -37,7 +38,8 @@ const validateSchema =  Yup.object({
     }
         setSubmitStatus(true);
        try{
-        const api = await postData("https://natobackend.onrender.com/addPerson",{...values,name: values.name.trim(),surname: values.surname.trim(),info: values.info?.trim(),money: +values.money,histroyStatus: histroyStatus});
+        const api = await postData("https://natobackend.onrender.com/addPerson",{...values,name: values.name.trim(),surname: values.surname.trim(),money: +values.money,histroyStatus: histroyStatus});
+        // info: values.info?.trim(),
         getPersons();
          navigate("/");
          toast.success("დაემატა წარმატებით!");
@@ -53,7 +55,8 @@ const validateSchema =  Yup.object({
           name: name,
           mobNumber: mobNumber,
           surname: surname,
-          info: info,
+          personInfo: info,
+          debtInfo: "",
           money: ""
         }}
         onSubmit={submitHandler}
@@ -62,9 +65,10 @@ const validateSchema =  Yup.object({
          <Form>
           <Input label='სახელი' name="name" id="name" type="text" placeholder='სახელი' />
           <Input label='გვარი' name="surname" id="surname" type="text" placeholder='გვარი' />
+          <Input label='ინფორმაცია ადამიანზე' name="personInfo" id="personInfo" type="text" placeholder='დამატებითი ინფორმაცია' />
           <Input label='თანხა' name="money" id="money" type="number" placeholder='თანხა' />
+          <Input label='ინფორმაცია ვალზე' name="debtInfo" id="debtInfo" type="text" placeholder='დამატებითი ინფორმაცია' />
           <Input label='ნომერი' name="mobNumber" id="mobNumber" type="number" placeholder='ნომერი' />
-          <Input label='დამატებით ინფორმაცია' name="info" id="info" type="text" placeholder='დამატებით ინფორმაცია' />
           <div className='grid place-content-center'>
           <button disabled={submitStatus} type="submit" className='border-[1px] bg-[#2ecc71] p-[10px] rounded-[12px] text-white'>დამატება</button>
           </div> 
