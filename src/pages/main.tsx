@@ -1,6 +1,7 @@
 import React,{useContext,useState,useEffect} from 'react'
 import {useNavigate} from "react-router-dom";
 import { context } from '../store/store';
+import useAxios from '../helper/useAxios';
 interface Person {
   name: string,
   surname: string,
@@ -12,11 +13,24 @@ interface Person {
 }
 
 const Main = () => {
+  const {getData} = useAxios();
   const navigate = useNavigate();
-  const {persons} = useContext(context);
+  const {persons,historyPersons} = useContext(context);
   const [state,setState] = useState(persons);
   const [search,setSearch] = useState("");
+  const [totalMoney,setTotlaMoney] = useState(0);
 
+  useEffect(() => {
+   const getTotalMoney = async () => {
+       try {
+        const api = await getData("https://natobackend.onrender.com/getTotalMoney");
+        setTotlaMoney(api.totalMoney);
+       }catch(error) {
+         console.log(error);
+       }
+   }
+   getTotalMoney();
+  },[])
   useEffect(() => {
     setState(persons);
   },[persons])
@@ -37,12 +51,18 @@ const Main = () => {
   
   return (
     <div className='flex justify-center flex-col items-center'>
-      <div onClick={() => navigate("/addPerson")} className='w-[285px] text-[17px] bg-[#34495e] text-white p-[7px] flex justify-center rounded-[10px] cursor-pointer mt-[20px]'>
+      <div onClick={() => navigate("/addPerson")} className='w-[285px] text-[17px] bg-[#34495e] text-white p-[7px] py-[11px] flex justify-center rounded-[10px] cursor-pointer mt-[20px]'>
         <p>ადამიანის დამატება სიაში.</p>
       </div>
-      <div>
+      
+      <div className='mt-[30px]'>
+        {totalMoney &&
+      <div className='mb-[15px] text-center'>
+        <p>მთლიანობაში ვალი - {totalMoney}ლ</p>
+      </div>
+}
         <div>
-          <input type="text" onChange={(e) => setSearch(e.target.value)}  className='border-[1px] mt-[30px] px-[10px] py-[10px] w-[280px] rounded-[10px] border-black' placeholder='გაფილტვრა'  />
+          <input type="text" onChange={(e) => setSearch(e.target.value)}  className='border-[1px]  px-[10px] py-[10px] w-[280px] rounded-[10px] border-black' placeholder='გაფილტვრა'  />
         </div>
       </div>
       <div className='mt-[10px]'>

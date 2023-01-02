@@ -36,7 +36,7 @@ const EachPerson = () => {
         return (
        <div  key={index} className={` ${d.status === "add" ? "bg-[#2ecc71]" : d.status === "edit" ? "bg-[#3498db]" : "bg-[#e74c3c]"} text-white rounded-[10px] text-center  max-w-[285px] mx-auto mt-[15px] min-h-[50px]  cursor-pointer flex justify-between items-center p-[4px] text-[17px] flex-wrap`}>
         <div className='text-start mr-[5px]'>
-        <p>{d.date.day}/{d.date.month}/{d.date.year}</p>
+        <p>{d.date.day}/{d.date.month + 1}/{d.date.year}</p>
         <p>{d.date.hour}:{d.date.minute}</p>
         </div>
         <div className='text-start'>

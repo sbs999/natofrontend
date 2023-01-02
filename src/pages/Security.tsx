@@ -18,12 +18,7 @@ const Security = () => {
         try{
             const api = await postData("https://natobackend.onrender.com/signIn",values);
             changeUserStatus(true);
-            localStorage.setItem("userStatus","true");
              navigate("/");
-             setTimeout(() => {
-                changeUserStatus(false);
-                localStorage.removeItem("userStatus");
-             },3600000)
            }catch(error) {
             toast.error("შეცდომაა, სცადეთ თავიდან!");
            console.log(error);

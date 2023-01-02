@@ -2,8 +2,8 @@ import { useReducer,createContext, useState } from "react";
 import useAxios from "../helper/useAxios";
 import { toast } from 'react-toastify';
 export const context = createContext({
-  persons: [{name: "",surname: "",money: 0,info: "",mobNumber: "",payment: [{status: "",money: 0,sumOfMoney: 0,date: {year: 0,month: 0,day: 0,hour: 0,minute: 0},info: ""}],status: "",_id: ""}],
-  historyPersons: [{name: "",surname: "",info: "",mobNumber: "",_id: ""}],
+  persons: [{name: "",updatedAt: "",surname: "",money: 0,info: "",mobNumber: "",payment: [{status: "",money: 0,sumOfMoney: 0,date: {year: 0,month: 0,day: 0,hour: 0,minute: 0},info: ""}],status: "",_id: ""}],
+  historyPersons: [{name: "",updatedAt: "",surname: "",info: "",mobNumber: "",_id: ""}],
   getPersons: () => {},
   getPersonsFromHistory: () => {},
   userStatus: false,
@@ -30,7 +30,8 @@ const reducer = (state: {persons: Array<Person>,historyPersons: Array<PersonInHi
   const getPersons = async () => {  
     try {
      const api = await getData("https://natobackend.onrender.com/getPerson");
-     dispatch({type: "getPersonList",payload: {persons: api.persons,historyPersons: [],userStatus: state.userStatus}});
+     const sortedPerson = api.persons.sort(function (a: Person, b: Person) { return new Date(a.updatedAt) < new Date(b.updatedAt) ? 1 : -1 });
+     dispatch({type: "getPersonList",payload: {persons: sortedPerson,historyPersons: [],userStatus: state.userStatus}});
     }catch(error) {
       toast.error("შეცდომაა, თავიდან შემოდით საიტზე!")
       console.log(error);
@@ -39,7 +40,8 @@ const reducer = (state: {persons: Array<Person>,historyPersons: Array<PersonInHi
   const getPersonsFromHistory = async() => {
     try {
       const api = await getData("https://natobackend.onrender.com/getPersonsFromHistory");
-      dispatch({type: "getPersonFromHistoryList",payload: {persons: [],historyPersons: api.persons,userStatus: state.userStatus}});
+      const sortedPerson = api.persons.sort(function (a: Person, b: Person) { return new Date(a.updatedAt) < new Date(b.updatedAt) ? 1 : -1 });
+      dispatch({type: "getPersonFromHistoryList",payload: {persons: [],historyPersons: sortedPerson,userStatus: state.userStatus}});
     }catch(err) {
       toast.error("შეცდომაა, თავიდან შემოდით საიტზე!")
       console.log(err);
@@ -72,6 +74,7 @@ interface Person {
   payment: [{status: string,money: number,sumOfMoney: number,date: {year: number,month: number,day: number,hour: number,minute: number},info: string}],
   status: string,
   _id: string,
+  updatedAt: string
 }
 
 interface PersonInHistory {
@@ -80,5 +83,6 @@ interface PersonInHistory {
   info: string,
   mobNumber: string,
   _id: string,
+  updatedAt: string
 }
 export default Store;

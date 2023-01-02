@@ -27,7 +27,7 @@ const UpdatePerson = () => {
     },[persons])
 
     const submitHandler = async (values: {name: string,mobNumber: string,info: string,surname: string,money: number}) => {
-      if(!userStatus || !localStorage.getItem("userStatus")) {
+      if(!userStatus) {
         changeUserStatus(false);
         navigate("/");
         toast.error("პაროლი შეიყვანეთ!");

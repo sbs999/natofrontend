@@ -29,7 +29,7 @@ const validateSchema =  Yup.object({
     const [submitStatus,setSubmitStatus] = useState(false);
     const submitHandler = async (values: PersonType) => {
      
-      if(!userStatus || !localStorage.getItem("userStatus")) {
+      if(!userStatus) {
         changeUserStatus(false);
         navigate("/");
         toast.error("პაროლი შეიყვანეთ!");

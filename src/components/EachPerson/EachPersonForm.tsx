@@ -24,7 +24,7 @@ const EachPersonForm: React.FC<{id: string}> = ({id}) => {
     const {postData} = useAxios();
     const [submitStatus,setSubmitStatus] = useState(false);
     const submitHandler = async (values: {info: string,status: string,money: string}) => {
-      if(!userStatus || !localStorage.getItem("userStatus")) {
+      if(!userStatus) {
         changeUserStatus(false);
         navigate("/");
         toast.error("პაროლი შეიყვანეთ!");

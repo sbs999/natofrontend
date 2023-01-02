@@ -16,12 +16,11 @@ function App() {
   useEffect(() => {
       getPersons();
       getPersonsFromHistory();
-      surprise(() => sendEmail());
+      surprise(() => sendEmail());  
   },[])
   // auth
   useEffect(() => {
-     const localUser = localStorage.getItem("userStatus");
-     if(localUser) {
+     if(userStatus) {
       changeUserStatus(true);
       }else{
         changeUserStatus(false);
