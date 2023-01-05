@@ -17,12 +17,17 @@ const Security = () => {
     const submitHandler = async (values: {password: string}) => {
         try{
             const api = await postData("https://natobackend.onrender.com/signIn",values);
+            localStorage.setItem("tokenShop",api.token);
             changeUserStatus(true);
              navigate("/");
            }catch(error) {
             toast.error("შეცდომაა, სცადეთ თავიდან!");
            console.log(error);
            }
+      setTimeout(() => {
+         localStorage.removeItem("tokenShop");
+         navigate("/");
+      },3600000)
     }
   return (
     <div className='mt-[100px] max-w-[280px] mx-auto'>
