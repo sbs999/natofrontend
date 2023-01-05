@@ -1,11 +1,11 @@
-import {Formik,Form,Field} from "formik";
+import {Formik,Form} from "formik";
 import * as Yup from "yup";
 import Input from "../../Reusable/form/input";
 import useAxios from "../../helper/useAxios";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { context } from "../../store/store";
-import { useContext } from "react";
+import { useAppDispatch } from "../../store/reduxStore";
+import { getPersons, logOut } from "../../store/debts";
 import Select from "../../Reusable/form/Select";
 import { useState } from "react";
 const validateSchema =  Yup.object({
@@ -19,22 +19,22 @@ const validateSchema =  Yup.object({
 })
 
 const EachPersonForm: React.FC<{id: string}> = ({id}) => {
-  const {getPersons,userStatus,changeUserStatus} = useContext(context);
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const {postData} = useAxios();
     const [submitStatus,setSubmitStatus] = useState(false);
     const submitHandler = async (values: {info: string,status: string,money: string}) => {
-      if(!userStatus) {
-        changeUserStatus(false);
+      if(!localStorage.getItem("tokenShop")) {
+        dispatch(logOut());
         navigate("/");
         toast.error("პაროლი შეიყვანეთ!");
      return;
     }
       setSubmitStatus(true);
-      const url = values.status === "add" ? 'https://natobackend.onrender.com/addMoney': "https://natobackend.onrender.com/payMoney";
+      const url = values.status === "add" ? 'http://localhost:8080/addMoney': "http://localhost:8080/payMoney";
        try{
-        const api = await postData(url,{money: +values.money,id: id,info: values.info});
-        getPersons();
+        await postData(url,{money: +values.money,id: id,info: values.info});
+        dispatch(getPersons({}))
          navigate("/");
          toast.success("ქმედება წარმატებულია! :)");
        }catch(error) {

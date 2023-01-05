@@ -1,13 +1,12 @@
-import React, { useEffect, useState,useContext } from 'react'
-import useAxios from '../../helper/useAxios';
+import React, { useEffect, useState } from 'react'
 import AddFormSchema from "./AddFormSchema";
 import { useNavigate,useParams } from 'react-router-dom';
-import { context } from '../../store/store';
+import { useAppSelector } from '../../store/reduxStore';
 
   
 const HistoryForm = () => {
     const {historyId} = useParams();
-    const {historyPersons} = useContext(context);
+    const {historyPersons} = useAppSelector(state => state.history);
     const [state,setState] = useState(historyPersons.filter(p => p._id?.toString() === historyId?.toString()));
     const navigate = useNavigate();
     

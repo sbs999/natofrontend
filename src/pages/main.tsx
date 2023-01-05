@@ -1,32 +1,25 @@
-import React,{useContext,useState,useEffect} from 'react'
+import React,{useState,useEffect} from 'react'
 import {useNavigate} from "react-router-dom";
-import { context } from '../store/store';
+// import { context } from '../store/store';
 import useAxios from '../helper/useAxios';
-interface Person {
-  name: string,
-  surname: string,
-  money: number,
-  info: string,
-  mobNumber: string,          
-  payment: [{status: string,money: number,date: {year: number,month: number,day: number,hour: number,minute: number},info: string}],
-  status: string
-}
+import { useAppSelector } from '../store/reduxStore';
+
 
 const Main = () => {
   const {getData} = useAxios();
   const navigate = useNavigate();
-  const {persons,historyPersons} = useContext(context);
+  const {persons} = useAppSelector(state => state.persons);
   const [state,setState] = useState(persons);
   const [search,setSearch] = useState("");
   const [totalMoney,setTotlaMoney] = useState(0);
-
   useEffect(() => {
    const getTotalMoney = async () => {
        try {
-        const api = await getData("https://natobackend.onrender.com/getTotalMoney");
+        const api = await getData("http://localhost:8080/getTotalMoney");
         setTotlaMoney(api.totalMoney);
        }catch(error) {
          console.log(error);
+         navigate("/");
        }
    }
    getTotalMoney();
@@ -43,7 +36,7 @@ const Main = () => {
         .toLowerCase()
         .includes(search.toString().toLocaleLowerCase().split(' ').join(''))
     );
-    setState(filteredInfo)
+    setState(filteredInfo as []);
    }else{
     setState(persons);
    }

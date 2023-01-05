@@ -1,40 +1,41 @@
-import React,{useContext,useEffect, useState} from 'react';
+import React,{useEffect} from 'react';
 import {Route,Routes} from "react-router-dom"
 import './App.css';
 import Main from './pages/main';
 import AddPerson from './pages/AddPerson';
-import { context } from './store/store';
 import EachPerson from './pages/EachPerson';
 import HistoryForm from './components/addPerson/historyForm';
 import UpdatePerson from './pages/UpdatePerson';
-import emailjs from '@emailjs/browser';
+import { useAppSelector,useAppDispatch } from './store/reduxStore';
 import Security from './pages/Security';
+import { getPersons as fetchPersons, login, logOut } from './store/debts';
+import {getHistoryPersons} from "./store/history";
 function App() {
-  const {getPersons,getPersonsFromHistory,userStatus,changeUserStatus} = useContext(context); 
-  
-
+  const {userStatus} = useAppSelector(state => state.persons);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if(localStorage.getItem("tokenShop")){
-      getPersons();
-      getPersonsFromHistory();
+      dispatch(fetchPersons({}));
+      dispatch(getHistoryPersons({}));
     }
   },[userStatus]);
   // auth
   useEffect(() => {
      if(localStorage.getItem("tokenShop")) {
-      changeUserStatus(true);
+      dispatch(login())
       }else{
-      changeUserStatus(false);
+      dispatch(logOut())
       }
    },[]);
+   const authCheck = localStorage.getItem("tokenShop") && userStatus;
   return (
     <div className='mb-[10px]'>
     <Routes>
-      <Route path="/" element={userStatus ? <Main /> :  <Security />} />
-      <Route path="/person/:personId" element={userStatus ? <EachPerson /> :  <Security />} />
-      <Route path="/addPerson" element={userStatus ? <AddPerson /> :  <Security />} />
-      <Route path="/addPerson/:historyId" element={userStatus ? <HistoryForm /> :  <Security />} />
-      <Route path="/updatePersonInfo/:personId" element={userStatus ? <UpdatePerson /> :  <Security />} />
+      <Route path="/" element={authCheck ? <Main /> :  <Security />} />
+      <Route path="/person/:personId" element={authCheck ? <EachPerson /> :  <Security />} />
+      <Route path="/addPerson" element={authCheck ? <AddPerson /> :  <Security />} />
+      <Route path="/addPerson/:historyId" element={authCheck ? <HistoryForm /> :  <Security />} />
+      <Route path="/updatePersonInfo/:personId" element={authCheck ? <UpdatePerson /> :  <Security />} />
     </Routes>
     </div>
   );

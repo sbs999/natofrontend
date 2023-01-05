@@ -4,8 +4,10 @@ import Input from "../../Reusable/form/input";
 import useAxios from "../../helper/useAxios";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { context } from "../../store/store";
-import { useContext, useState } from "react";
+import {  useState } from "react";
+import { useAppDispatch } from "../../store/reduxStore";
+import { logOut } from "../../store/debts";
+import { getPersons } from "../../store/debts";
 
 interface PersonType {
   name: string,
@@ -25,22 +27,23 @@ const validateSchema =  Yup.object({
   })
   
   const AddFormSchema: React.FC<{histroyStatus: {status: string,id: string},name: string,mobNumber: string,surname:string,info: string}> = ({histroyStatus,name,mobNumber,surname,info}) => {
-    const {getPersons,userStatus,changeUserStatus} = useContext(context);
+
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const {postData} = useAxios();
     const [submitStatus,setSubmitStatus] = useState(false);
     const submitHandler = async (values: PersonType) => {
-      if(!userStatus) {
-        changeUserStatus(false);
+      if(!localStorage.getItem("tokenShop")) {
+        dispatch(logOut());
         navigate("/");
         toast.error("პაროლი შეიყვანეთ!");
      return;
     }
         setSubmitStatus(true);
        try{
-        const api = await postData("https://natobackend.onrender.com/addPerson",{...values,name: values.name.trim(),surname: values.surname.trim(),money: +values.money,histroyStatus: histroyStatus});
+        await postData("http://localhost:8080/addPerson",{...values,name: values.name.trim(),surname: values.surname.trim(),money: +values.money,histroyStatus: histroyStatus});
         // info: values.info?.trim(),
-        getPersons();
+        dispatch(getPersons({}));
          navigate("/");
          toast.success("დაემატა წარმატებით!");
        }catch(error) {

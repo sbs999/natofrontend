@@ -1,23 +1,17 @@
-import React, { useEffect, useState,useContext } from 'react'
-import useAxios from '../../helper/useAxios';
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { context } from '../../store/store';
-interface PersonInHistory {
-  name: string,
-  surname: string,
-  info?: string,
-  mobNumber?: string,
-  _id?: string,
-}
+import { getHistoryPersons } from '../../store/history';
+import { useAppSelector,useAppDispatch } from '../../store/reduxStore';
+
 
 const PersonList = () => {
-    const {getData} = useAxios();
     const navigate = useNavigate();
-    const {historyPersons,getPersonsFromHistory} = useContext(context);
+    const {historyPersons} = useAppSelector(state => state.history);
     const [state,setState] = useState(historyPersons);
+    const dispatch = useAppDispatch();
     const [search,setSearch] = useState("");
      useEffect(() => {
-      getPersonsFromHistory();
+      dispatch(getHistoryPersons({}));
      },[])
     useEffect(() => {
       setState(historyPersons);
@@ -31,7 +25,7 @@ const PersonList = () => {
           .toLowerCase()
           .includes(search.toString().toLocaleLowerCase().split(' ').join(''))
       );
-      setState(filteredInfo);
+      setState(filteredInfo as []);
      }else{
       setState(historyPersons);
      }

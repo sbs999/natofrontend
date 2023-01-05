@@ -1,11 +1,12 @@
-import React,{useContext} from 'react'
+import React from 'react'
 import { toast } from 'react-toastify';
 import {Formik,Form} from "formik";
 import * as Yup from "yup";
 import Input from '../Reusable/form/input';
 import useAxios from '../helper/useAxios';
 import { useNavigate } from 'react-router-dom';
-import { context } from '../store/store';
+import { login,logOut } from '../store/debts';
+import { useAppDispatch } from '../store/reduxStore';
 const validateSchema =  Yup.object({
     password: Yup.string().required("პაროლი სავალდებულოა!")
   })
@@ -13,12 +14,12 @@ const validateSchema =  Yup.object({
 const Security = () => {
     const {postData} = useAxios();
     const navigate = useNavigate();
-    const {userStatus,changeUserStatus} = useContext(context);
+    const dispatch = useAppDispatch();
     const submitHandler = async (values: {password: string}) => {
         try{
-            const api = await postData("https://natobackend.onrender.com/signIn",values);
+            const api = await postData("http://localhost:8080/signIn",values);
             localStorage.setItem("tokenShop",api.token);
-            changeUserStatus(true);
+            dispatch(login());
              navigate("/");
            }catch(error) {
             toast.error("შეცდომაა, სცადეთ თავიდან!");
@@ -26,6 +27,7 @@ const Security = () => {
            }
       setTimeout(() => {
          localStorage.removeItem("tokenShop");
+         dispatch(logOut());
          navigate("/");
       },3600000)
     }

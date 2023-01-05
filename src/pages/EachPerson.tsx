@@ -1,9 +1,9 @@
-import React,{useContext,useState,useEffect} from 'react'
+import React,{useState,useEffect} from 'react'
 import { useNavigate,useParams } from 'react-router-dom'
-import { context } from '../store/store';
+import { useAppSelector } from '../store/reduxStore';
 import EachPersonForm from '../components/EachPerson/EachPersonForm';
 const EachPerson = () => {
-    const {persons} = useContext(context);
+    const {persons} = useAppSelector(state => state.persons);
     const {personId} = useParams();
     const [state,setState] = useState(persons.filter(p => p._id.toString() === personId?.toString()));
     const navigate = useNavigate();
