@@ -15,7 +15,7 @@ const Main = () => {
   useEffect(() => {
    const getTotalMoney = async () => {
        try {
-        const api = await getData("http://localhost:8080/getTotalMoney");
+        const api = await getData("https://natobackend.onrender.com/getTotalMoney");
         setTotlaMoney(api.totalMoney);
        }catch(error) {
          console.log(error);

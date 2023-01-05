@@ -41,7 +41,7 @@ const validateSchema =  Yup.object({
     }
         setSubmitStatus(true);
        try{
-        await postData("http://localhost:8080/addPerson",{...values,name: values.name.trim(),surname: values.surname.trim(),money: +values.money,histroyStatus: histroyStatus});
+        await postData("https://natobackend.onrender.com/addPerson",{...values,name: values.name.trim(),surname: values.surname.trim(),money: +values.money,histroyStatus: histroyStatus});
         // info: values.info?.trim(),
         dispatch(getPersons({}));
          navigate("/");

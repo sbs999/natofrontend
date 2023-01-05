@@ -31,7 +31,7 @@ const EachPersonForm: React.FC<{id: string}> = ({id}) => {
      return;
     }
       setSubmitStatus(true);
-      const url = values.status === "add" ? 'http://localhost:8080/addMoney': "http://localhost:8080/payMoney";
+      const url = values.status === "add" ? 'https://natobackend.onrender.com/addMoney': "https://natobackend.onrender.com/payMoney";
        try{
         await postData(url,{money: +values.money,id: id,info: values.info});
         dispatch(getPersons({}))

@@ -40,7 +40,7 @@ const UpdatePerson = () => {
     }
       setSubmitStatus(true);
         try{
-           await postData("http://localhost:8080/updatePerson",{...values,id: personId});
+           await postData("https://natobackend.onrender.com/updatePerson",{...values,id: personId});
             dispatch(getPersons({}));
             navigate("/");
             toast.success("დაემატა წარმატებით!");
