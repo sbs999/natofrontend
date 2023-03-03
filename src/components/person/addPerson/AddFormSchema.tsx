@@ -1,14 +1,13 @@
 import {Formik,Form} from "formik";
 import * as Yup from "yup";
-import Input from "../../Reusable/form/input";
-import useAxios from "../../helper/useAxios";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import {  useState } from "react";
-import { useAppDispatch } from "../../store/reduxStore";
-import { logOut } from "../../store/debts";
-import { getPersons } from "../../store/debts";
-
+import Input from "../../../Reusable/form/input";
+import useAxios from "../../../helper/useAxios";
+import { useAppDispatch } from "../../../store/reduxStore";
+import { logOut } from "../../../store/debts";
+import { getPersons } from "../../../store/debts";
 interface PersonType {
   name: string,
   surname: string,
@@ -41,10 +40,10 @@ const validateSchema =  Yup.object({
     }
         setSubmitStatus(true);
        try{
-        await postData("https://natobackend.onrender.com/addPerson",{...values,name: values.name.trim(),surname: values.surname.trim(),money: +values.money,histroyStatus: histroyStatus});
+        await postData("http://localhost:8080/addPerson",{...values,name: values.name.trim(),surname: values.surname.trim(),money: +values.money,histroyStatus: histroyStatus});
         // info: values.info?.trim(),
         dispatch(getPersons({}));
-         navigate("/");
+         navigate("/persons");
          toast.success("დაემატა წარმატებით!");
        }catch(error) {
         toast.error("შეცდომაა, სცადეთ თავიდან!");

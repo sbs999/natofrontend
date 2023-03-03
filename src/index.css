@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.validTable td  {
+    border: 1px solid blue;
+    text-align: center;
+}
+
+.validTable th  {
+    border: 1px solid blue;
+    text-align: center;
+}
+
+.InvalidBooks td  {
+    border: 1px solid red;
+    text-align: center;
+}
+
+.InvalidBooks th  {
+    border: 1px solid red;
+    text-align: center;
+}
+
+
+th, td {
+    padding: 5px;
+  }
+

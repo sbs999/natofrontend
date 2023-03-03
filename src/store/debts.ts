@@ -18,7 +18,7 @@ export interface Person {
 export const getPersons = createAsyncThunk('persons/fetch', async (value: {}) => {
     const {getData} = useAxios();
     try {
-	const api = await getData("https://natobackend.onrender.com/getPerson");
+	const api = await getData("http://localhost:8080/getPerson");
     const sortedPerson = api.persons.sort(function (a: Person, b: Person) { return new Date(a.updatedAt) < new Date(b.updatedAt) ? 1 : -1 });
     return sortedPerson;
     }catch{

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="218.156" height="38" viewBox="0 0 218.156 38">
+    <g data-name="Group 643">
+        <g data-name="Group 642">
+            <text data-name="or drag drop it here" transform="translate(38.156 34)" style="font-family:Poppins-Medium,Poppins;font-weight:500;fill:#797979;font-size:12px"><tspan x="0" y="0">or drag drop it here</tspan></text>
+            <text data-name="Select Excel File to upload" transform="translate(38.156 15)" style="font-size:14px;font-family:Poppins-Medium,Poppins;font-weight:500"><tspan x="0" y="0">Select Excel File to upload</tspan></text>
+        </g>
+        <g data-name="Group 641">
+            <path data-name="Path 92" d="m16 16-4-4-4 4" transform="translate(.162 6.999)" style="fill:none;stroke:#304df2;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/>
+            <path data-name="Line 173" transform="translate(12.162 18.999)" style="fill:none;stroke:#304df2;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px" d="M0 0v9"/>
+            <path data-name="Path 93" d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" transform="translate(.162 6.999)" style="fill:none;stroke:#304df2;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/>
+            <path data-name="Path 94" d="m16 16-4-4-4 4" transform="translate(.162 6.999)" style="fill:none;stroke:#304df2;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/>
+        </g>
+    </g>
+</svg>

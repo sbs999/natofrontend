@@ -1,9 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import {useNavigate} from "react-router-dom";
 // import { context } from '../store/store';
-import useAxios from '../helper/useAxios';
-import { useAppSelector } from '../store/reduxStore';
-
+import useAxios from '../../helper/useAxios';
+import { useAppSelector } from '../../store/reduxStore';
 
 const Main = () => {
   const {getData} = useAxios();
@@ -15,7 +14,7 @@ const Main = () => {
   useEffect(() => {
    const getTotalMoney = async () => {
        try {
-        const api = await getData("https://natobackend.onrender.com/getTotalMoney");
+        const api = await getData("http://localhost:8080/getTotalMoney");
         setTotlaMoney(api.totalMoney);
        }catch(error) {
          console.log(error);
@@ -24,6 +23,7 @@ const Main = () => {
    }
    getTotalMoney();
   },[])
+
   useEffect(() => {
     setState(persons);
   },[persons])
@@ -43,11 +43,12 @@ const Main = () => {
   },[search])
   
   return (
+    <>
+    <button onClick={() => navigate("/")} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white mt-[10px] ml-[10px]'>უკან გასვლა</button>
     <div className='flex justify-center flex-col items-center'>
       <div onClick={() => navigate("/addPerson")} className='w-[285px] text-[17px] bg-[#34495e] text-white p-[7px] py-[11px] flex justify-center rounded-[10px] cursor-pointer mt-[20px]'>
         <p>ადამიანის დამატება სიაში.</p>
       </div>
-      
       <div className='mt-[30px]'>
       <div className='mb-[15px] text-center'>
         <p>მთლიანობაში ვალი - {totalMoney}ლ</p>
@@ -67,6 +68,7 @@ const Main = () => {
 }
 </div>
 </div>
+</>
   )
 }
 

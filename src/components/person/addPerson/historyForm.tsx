@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AddFormSchema from "./AddFormSchema";
-import { useNavigate,useParams } from 'react-router-dom';
-import { useAppSelector } from '../../store/reduxStore';
-
+import { useNavigate,useParams,Link } from 'react-router-dom';
+import { useAppSelector } from '../../../store/reduxStore';
   
 const HistoryForm = () => {
     const {historyId} = useParams();
@@ -16,7 +15,10 @@ const HistoryForm = () => {
 
   return (
     <>
-     <button onClick={() => navigate("/addPerson")} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white mt-[10px] ml-[10px]'>უკან გასვლა</button>
+     <div className='flex justify-between items-center mt-[10px] '>
+    <button onClick={() => navigate("/addPerson")} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white ml-[10px]'>უკან გასვლა</button>
+      <Link to="/" className='mr-[9px] text-gray-500'><p>დასაწყისი</p></Link> 
+    </div>
      {state.length <= 0 ? (
         <p>შეცდომაა, არა არის ასეთი ადამიანი თავიდან სცადეთ!</p>
      ) : (

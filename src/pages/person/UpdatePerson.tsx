@@ -1,14 +1,13 @@
 import React,{useState,useEffect} from 'react'
-import { useNavigate,useParams } from 'react-router-dom'
+import { useNavigate,useParams,Link } from 'react-router-dom'
 import {Formik,Form} from "formik";
 import * as Yup from "yup";
-import Input from '../Reusable/form/input';
-import { getPersons } from '../store/debts';
-import useAxios from '../helper/useAxios';
-import { toast } from 'react-toastify';
-import { useAppSelector,useAppDispatch } from '../store/reduxStore';
-import { logOut } from '../store/debts';
-
+import Input from '../../Reusable/form/input';
+import { getPersons } from '../../store/debts';
+import useAxios from '../../helper/useAxios';
+import { useAppDispatch,useAppSelector } from '../../store/reduxStore';
+import { logOut } from '../../store/debts';
+import {toast} from "react-toastify";
 const validateSchema =  Yup.object({
     name: Yup.string().min(2,"მინიმუმ ორი ასო სახელი!").required("სახელი სავალდებულოა!"),
     surname: Yup.string().min(3,"მინიმუმ სამი ასო გვარი!").required("გვარი სავალდებულოა!"),
@@ -40,9 +39,9 @@ const UpdatePerson = () => {
     }
       setSubmitStatus(true);
         try{
-           await postData("https://natobackend.onrender.com/updatePerson",{...values,id: personId});
+           await postData("http://localhost:8080/updatePerson",{...values,id: personId});
             dispatch(getPersons({}));
-            navigate("/");
+            navigate("/persons");
             toast.success("დაემატა წარმატებით!");
            }catch(error) {
             toast.error("შეცდომაა, სცადეთ თავიდან!");
@@ -52,7 +51,10 @@ const UpdatePerson = () => {
     }
   return (
     <div>
-        <button onClick={() => navigate(`/person/${personId}`)} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white mt-[10px] ml-[10px]'>უკან გასვლა</button>
+        <div className='flex justify-between items-center mt-[10px] '>
+    <button onClick={() => navigate(`/person/${personId}`)} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white ml-[10px]'>უკან გასვლა</button>
+      <Link to="/" className='mr-[9px] text-gray-500'><p>დასაწყისი</p></Link> 
+    </div>
         <div>
             {state.length > 0 ? (
               <div className='max-w-[270px] mx-auto mt-[30px]'>

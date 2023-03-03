@@ -1,7 +1,7 @@
 import React from 'react'
 import {useField } from 'formik';
 
-const Input: React.FC<{label: string,name: string, id: string, type: string, placeholder: string}> = ({label,...props}) => {
+const Input: React.FC<{label: string,name: string, id: string, type: string, placeholder: string,step?: string,min?: string}> = ({label,...props}) => {
     const [Field,meta] = useField(props);
   return (
     <div className=' w-[100%] flex flex-col mb-[5px] '>

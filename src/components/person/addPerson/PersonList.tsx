@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { getHistoryPersons } from '../../store/history';
-import { useAppSelector,useAppDispatch } from '../../store/reduxStore';
-
-
+import { getHistoryPersons } from '../../../store/history';
+import { useAppSelector,useAppDispatch } from '../../../store/reduxStore';
 const PersonList = () => {
     const navigate = useNavigate();
     const {historyPersons} = useAppSelector(state => state.history);

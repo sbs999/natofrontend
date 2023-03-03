@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
-import { useNavigate,useParams } from 'react-router-dom'
-import { useAppSelector } from '../store/reduxStore';
-import EachPersonForm from '../components/EachPerson/EachPersonForm';
+import { useNavigate,useParams,Link } from 'react-router-dom'
+import { useAppSelector } from '../../store/reduxStore';
+import EachPersonForm from '../../components/person/EachPerson/EachPersonForm';
 const EachPerson = () => {
     const {persons} = useAppSelector(state => state.persons);
     const {personId} = useParams();
@@ -14,14 +14,15 @@ const EachPerson = () => {
 
   return (
     <div>
-      <div className='flex justify-between items-end'>
-        <button onClick={() => navigate("/")} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white mt-[10px] ml-[10px]'>უკან გასვლა</button>
-       {state.length > 0 && <p onClick={() => navigate(`/updatePersonInfo/${state[0]._id}`)} className='mr-[10px] text-gray-400 underline cursor-pointer'>განახლება</p>}
-        </div>
+        <div className='flex justify-between items-center mt-[10px] '>
+    <button onClick={() => navigate("/persons")} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white ml-[10px]'>უკან გასვლა</button>
+      <Link to="/" className='mr-[9px] text-gray-500'><p>დასაწყისი</p></Link> 
+    </div>
+    {state.length > 0 && <div className='text-right text-[18px] mt-[15px]'><p onClick={() => navigate(`/updatePersonInfo/${state[0]._id}`)} className='mr-[10px] text-gray-400 underline cursor-pointer'>განახლება</p></div>}
         {state.length <= 0 ? (
          <div className='mt-[50px]'>შეცდომაა,თავიდან სცადეთ! არა არის ასეთი ადამიანი!</div>
         ) : (
-        <div className='mt-[30px] '>
+        <div className='mt-[10px] '>
           <div className='flex flex-col items-center justify-center mx-[6px] text-center'>
            <div className='text-[22px]'>{state[0].name} {state[0].surname}</div>
            <div className='text-[22px] mt-[10px]'>ვალი - {state[0].money}ლ </div>

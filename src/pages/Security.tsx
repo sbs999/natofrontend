@@ -17,7 +17,7 @@ const Security = () => {
     const dispatch = useAppDispatch();
     const submitHandler = async (values: {password: string}) => {
         try{
-            const api = await postData("https://natobackend.onrender.com/signIn",values);
+            const api = await postData("http://localhost:8080/signIn",values);
             localStorage.setItem("tokenShop",api.token);
             dispatch(login());
              navigate("/");

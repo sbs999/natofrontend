@@ -1,14 +1,17 @@
 import React,{useState} from 'react'
-import {useNavigate} from "react-router-dom";
-import PersonList from '../components/addPerson/PersonList';
-import AddFormSchema from '../components/addPerson/AddFormSchema';
+import {useNavigate,Link} from "react-router-dom";
+import PersonList from '../../components/person/addPerson/PersonList';
+import AddFormSchema from '../../components/person/addPerson/AddFormSchema';
 const AddPerson = () => { 
     const [state,setState] = useState<String>("list");
     const navigate = useNavigate();
     
   return (
     <div>
-        <button onClick={() => navigate("/")} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white mt-[10px] ml-[10px]'>უკან გასვლა</button>
+        <div className='flex justify-between items-center mt-[10px] '>
+    <button onClick={() => navigate("/persons")} type="submit" className='border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white ml-[10px]'>უკან გასვლა</button>
+      <Link to="/" className='mr-[9px] text-gray-500'><p>დასაწყისი</p></Link> 
+    </div>
         <div className='flex max-w-[300px] mx-auto rounded-[10px] justify-between mt-[20px] '>
             <div onClick={() => setState("list")} className={`w-[50%] ${state === "list" ? 'bg-green-500' : "bg-red-500"} text-white grid place-content-center text-center rounded-[10px] cursor-pointer`}>ისტორიიდან დამატება</div>
             <div onClick={() => setState("new")} className={`w-[50%] ${state === "new" ? 'bg-green-500' : "bg-red-500"} text-white grid place-content-center rounded-[10px] cursor-pointer`}>ახლის დამატება</div>
