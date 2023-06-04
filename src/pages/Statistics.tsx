@@ -12,7 +12,9 @@ function Statistics() {
   useEffect(() => {
     const getTotalMoney = async () => {
       try {
-        const api = await getData(`${backendUrl}/getTotalMoney`);
+        const api = await getData(
+          `https://natobackend.onrender.com/getTotalMoney`
+        );
         setTotlaMoney(api.totalMoney);
       } catch (error) {
         console.log(error);

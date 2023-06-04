@@ -53,7 +53,7 @@ const AddFormSchema: React.FC<{
     }
     setSubmitStatus(true);
     try {
-      await postData(`${backendUrl}/addPerson`, {
+      await postData(`https://natobackend.onrender.com/addPerson`, {
         ...values,
         name: values.name.trim(),
         surname: values.surname.trim(),

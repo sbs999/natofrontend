@@ -55,7 +55,7 @@ const UpdatePerson = () => {
     }
     setSubmitStatus(true);
     try {
-      await postData(`${backendUrl}/updatePerson`, {
+      await postData(`https://natobackend.onrender.com/updatePerson`, {
         ...values,
         id: personId,
       });

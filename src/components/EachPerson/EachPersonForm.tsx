@@ -39,8 +39,8 @@ const EachPersonForm: React.FC<{ id: string }> = ({ id }) => {
 
     const url =
       values.status === "add"
-        ? `${backendUrl}/addMoney`
-        : `${backendUrl}/payMoney`;
+        ? `https://natobackend.onrender.com/addMoney`
+        : `https://natobackend.onrender.com/payMoney`;
 
     try {
       await postData(url, { money: +values.money, id: id, info: values.info });
