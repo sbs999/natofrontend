@@ -3,12 +3,20 @@ import { useNavigate } from "react-router-dom";
 import useAxios from "../helper/useAxios";
 import { toast } from "react-toastify";
 
+interface DateType {
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+}
+
 function Note() {
   const [status, setStatus] = useState("readOnly");
   const navigate = useNavigate();
   const [content, setContent] = useState({ saveNote: "", newNote: "" });
+  const [date, setDate] = useState<string>("");
   const { getData, postData } = useAxios();
-
   const backendUrl =
     process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
 
@@ -16,7 +24,9 @@ function Note() {
     const getTotalMoney = async () => {
       try {
         const api = await getData(`https://natobackend.onrender.com/getNote`);
+        console.log(api);
         setContent({ saveNote: api.text, newNote: api.text });
+        setDate(modifeDate(api.date));
       } catch (error) {
         console.log(error);
         navigate("/");
@@ -36,6 +46,15 @@ function Note() {
       toast.error("შეცდომაა! თავიდან საცდეთ!");
       console.log(error);
     }
+  };
+
+  const modifeDate = (date: DateType) => {
+    return `${date.day}/${
+      date.month.toString().length > 1 ? date.month : "0" + date.month
+    }/${date.year}  `;
+    //  ${date.hour}:${
+    //   date.minute.toString().length > 1 ? date.minute : "0" + date.minute
+    // }
   };
 
   return (
@@ -85,6 +104,10 @@ function Note() {
             </button>
           </div>
         )}
+      </div>
+
+      <div className="w-[95%] mx-auto text-[18px] mb-1">
+        {date && <p>{`ბოლო განახლება - ${date}`}</p>}
       </div>
 
       <div className="w-[95%] h-[75vh] border border-black rounded-[10px]  mx-[2.5%]">
