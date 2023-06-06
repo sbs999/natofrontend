@@ -19,7 +19,12 @@ function Note() {
   const { getData, postData } = useAxios();
   const backendUrl =
     process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
-
+  console.log("process.env.REACT_APP_PORT", process.env.REACT_APP_PORT);
+  console.log("backendUrl", backendUrl);
+  console.log(
+    "REACT_APP_DEVELOPMENT_PORT",
+    process.env.REACT_APP_DEVELOPMENT_PORT
+  );
   useEffect(() => {
     const getTotalMoney = async () => {
       try {
