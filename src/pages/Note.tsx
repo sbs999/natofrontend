@@ -17,18 +17,11 @@ function Note() {
   const [content, setContent] = useState({ saveNote: "", newNote: "" });
   const [date, setDate] = useState<string>("");
   const { getData, postData } = useAxios();
-  const backendUrl =
-    process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
-  console.log("process.env.REACT_APP_PORT", process.env.REACT_APP_PORT);
-  console.log("backendUrl", backendUrl);
-  console.log(
-    "REACT_APP_DEVELOPMENT_PORT",
-    process.env.REACT_APP_DEVELOPMENT_PORT
-  );
+
   useEffect(() => {
     const getTotalMoney = async () => {
       try {
-        const api = await getData(`https://natobackend.onrender.com/getNote`);
+        const api = await getData(`getNote`);
         setContent({ saveNote: api.text, newNote: api.text });
         setDate(modifeDate(api.date));
       } catch (error) {
@@ -42,7 +35,7 @@ function Note() {
 
   const updateNote = async () => {
     try {
-      const api = await postData(`https://natobackend.onrender.com/postNote`, {
+      const api = await postData(`postNote`, {
         text: content.newNote,
       });
       setContent((note) => ({ ...note, saveNote: api.text }));

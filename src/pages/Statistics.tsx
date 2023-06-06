@@ -10,8 +10,6 @@ function Statistics() {
     allPeople: 0,
   });
   const { getData } = useAxios();
-  const backendUrl =
-    process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
 
   interface StatisticsType {
     peopleWithDebt: number;
@@ -22,9 +20,7 @@ function Statistics() {
   useEffect(() => {
     const getTotalMoney = async () => {
       try {
-        const api: StatisticsType = await getData(
-          `https://natobackend.onrender.com/statistics`
-        );
+        const api: StatisticsType = await getData(`statistics`);
         setDatas(api);
       } catch (error) {
         console.log(error);

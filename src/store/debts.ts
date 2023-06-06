@@ -28,15 +28,12 @@ export interface Person {
   updatedAt: string;
 }
 
-const backendUrl =
-  process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
-
 export const getPersons = createAsyncThunk(
   "persons/fetch",
   async (value: {}) => {
     const { getData } = useAxios();
     try {
-      const api = await getData(`https://natobackend.onrender.com/getPerson`);
+      const api = await getData(`getPerson`);
       const sortedPerson = api.persons.sort(function (a: Person, b: Person) {
         return new Date(a.updatedAt) < new Date(b.updatedAt) ? 1 : -1;
       });

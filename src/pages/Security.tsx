@@ -17,15 +17,9 @@ const Security = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const backendUrl =
-    process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
-
   const submitHandler = async (values: { password: string }) => {
     try {
-      const api = await postData(
-        `https://natobackend.onrender.com/signIn`,
-        values
-      );
+      const api = await postData(`signIn`, values);
       localStorage.setItem("tokenShop", api.token);
       dispatch(login());
       navigate("/");

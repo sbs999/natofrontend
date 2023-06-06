@@ -20,8 +20,6 @@ const EachPersonForm: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
   const { postData } = useAxios();
   const [submitStatus, setSubmitStatus] = useState(false);
-  const backendUrl =
-    process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
 
   const submitHandler = async (values: {
     info: string;
@@ -37,10 +35,7 @@ const EachPersonForm: React.FC<{ id: string }> = ({ id }) => {
 
     setSubmitStatus(true);
 
-    const url =
-      values.status === "add"
-        ? `https://natobackend.onrender.com/addMoney`
-        : `https://natobackend.onrender.com/payMoney`;
+    const url = values.status === "add" ? `addMoney` : `payMoney`;
 
     try {
       await postData(url, { money: +values.money, id: id, info: values.info });

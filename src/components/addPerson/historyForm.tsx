@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import AddFormSchema from "./AddFormSchema";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../store/reduxStore";
-import axios from "axios";
 import { toast } from "react-toastify";
 import useAxios from "../../helper/useAxios";
 
@@ -14,8 +13,6 @@ const HistoryForm = () => {
   );
   const navigate = useNavigate();
   const { deleteData } = useAxios();
-  const backendUrl =
-    process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
 
   useEffect(() => {
     setState(
@@ -25,9 +22,7 @@ const HistoryForm = () => {
 
   const deleteUser = async (id: string) => {
     try {
-      const data = await deleteData(
-        `https://natobackend.onrender.com/removePerson/${id}`
-      );
+      const data = await deleteData(`removePerson/${id}`);
       console.log(data);
       navigate("/addPerson");
       toast.success("წარმატებით წაიშალა.");

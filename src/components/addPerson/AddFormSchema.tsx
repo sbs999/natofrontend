@@ -41,8 +41,6 @@ const AddFormSchema: React.FC<{
   const navigate = useNavigate();
   const { postData } = useAxios();
   const [submitStatus, setSubmitStatus] = useState(false);
-  const backendUrl =
-    process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
 
   const submitHandler = async (values: PersonType) => {
     if (!localStorage.getItem("tokenShop")) {
@@ -53,7 +51,7 @@ const AddFormSchema: React.FC<{
     }
     setSubmitStatus(true);
     try {
-      await postData(`https://natobackend.onrender.com/addPerson`, {
+      await postData(`addPerson`, {
         ...values,
         name: values.name.trim(),
         surname: values.surname.trim(),
