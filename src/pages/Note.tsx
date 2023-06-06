@@ -24,7 +24,6 @@ function Note() {
     const getTotalMoney = async () => {
       try {
         const api = await getData(`https://natobackend.onrender.com/getNote`);
-        console.log(api);
         setContent({ saveNote: api.text, newNote: api.text });
         setDate(modifeDate(api.date));
       } catch (error) {
@@ -42,6 +41,7 @@ function Note() {
         text: content.newNote,
       });
       setContent((note) => ({ ...note, saveNote: api.text }));
+      toast.success("წარმატებით შეინახა.");
     } catch (error) {
       toast.error("შეცდომაა! თავიდან საცდეთ!");
       console.log(error);

@@ -4,18 +4,28 @@ import { useNavigate } from "react-router-dom";
 
 function Statistics() {
   const navigate = useNavigate();
-  const [totalMoney, setTotlaMoney] = useState(0);
+  const [datas, setDatas] = useState<StatisticsType>({
+    peopleWithDebt: 0,
+    totalDebt: 0,
+    allPeople: 0,
+  });
   const { getData } = useAxios();
   const backendUrl =
     process.env.REACT_APP_PORT || "https://natobackend.onrender.com";
 
+  interface StatisticsType {
+    peopleWithDebt: number;
+    totalDebt: number;
+    allPeople: number;
+  }
+
   useEffect(() => {
     const getTotalMoney = async () => {
       try {
-        const api = await getData(
-          `https://natobackend.onrender.com/getTotalMoney`
+        const api: StatisticsType = await getData(
+          `https://natobackend.onrender.com/statistics`
         );
-        setTotlaMoney(api.totalMoney);
+        setDatas(api);
       } catch (error) {
         console.log(error);
         navigate("/statistics");
@@ -33,8 +43,12 @@ function Statistics() {
       >
         უკან გასვლა
       </button>
-      <div className="mt-[30px] text-center text-[22px]">
-        <p>მთლიანობაში ვალი - {totalMoney}ლ</p>
+      <div className="mt-[30px] text-center text-[19px]">
+        <p>მთლიანობაში ვალი - {datas.totalDebt}ლ</p>
+        <p className="mt-4">
+          ადამიანები, ვისაც ვალი აქვს - {datas.peopleWithDebt}
+        </p>
+        <p className="mt-4">ადამიანების რაოდენობა საიტზე - {datas.allPeople}</p>
       </div>
     </div>
   );
