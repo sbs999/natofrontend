@@ -2,10 +2,10 @@ import React from "react";
 import axios from "axios";
 
 const useAxios = () => {
-  const backendUrl =
-    process.env.NODE_ENV === "development"
-      ? process.env.REACT_APP_DEVELOPMENT_PORT
-      : process.env.REACT_APP_PRODUCTION_PORT;
+  const backendUrl = "https://natobackend.onrender.com";
+  // process.env.NODE_ENV === "development"
+  //   ? process.env.REACT_APP_DEVELOPMENT_PORT
+  //   : process.env.REACT_APP_PRODUCTION_PORT;
 
   const postData = async (url: string, data: object) => {
     const token = localStorage.getItem("tokenShop");
