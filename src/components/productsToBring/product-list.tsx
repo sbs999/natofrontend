@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/reduxStore";
 import { updateProduct } from "../../store/productsToBring/products";
 import { ProductStatuses } from "../../constants/product-statuses.constants";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const ProductList = ({
   categories,
@@ -224,8 +226,16 @@ const ProductModal = ({
   productStatus: ProductStatuses;
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageLoading, setImageLoading] = useState(
+    product?.imageUrls?.length ? true : false
+  );
+
+  const handleImageLoad = () => {
+    setImageLoading(false);
+  };
 
   const nextImage = () => {
+    setImageLoading(true);
     setCurrentImageIndex((prevIndex) => {
       return product.imageUrls
         ? prevIndex === product.imageUrls?.length - 1
@@ -300,21 +310,29 @@ const ProductModal = ({
             <div className="mt-4 relative">
               {product.imageUrls && product.imageUrls.length > 0 ? (
                 <>
-                  {product.imageUrls?.length > 1 ? (
+                  {product.imageUrls.length > 1 && (
                     <div className="w-[90%] mx-auto">
                       {`${currentImageIndex + 1} / ${product.imageUrls.length}`}
                     </div>
-                  ) : (
-                    ""
                   )}
 
+                  {imageLoading && (
+                    <div style={{ textAlign: "center" }}>
+                      <Skeleton height={380} width="85%" />
+                    </div>
+                  )}
                   <img
                     src={product.imageUrls[currentImageIndex]}
                     alt="Product"
-                    width="80%"
-                    style={{ maxHeight: "400px" }}
-                    className="max-w-xs  mx-auto"
+                    onLoad={handleImageLoad}
+                    style={{
+                      display: imageLoading ? "none" : "block",
+                      width: "85%",
+                      maxHeight: "400px",
+                    }}
+                    className="max-w-xs mx-auto"
                   />
+
                   {product.imageUrls.length > 1 && (
                     <>
                       <button
