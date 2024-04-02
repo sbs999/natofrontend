@@ -45,7 +45,7 @@ const Main = () => {
             სტატისტიკა
           </button>
           <button
-            onClick={() => navigate("/notes")}
+            onClick={() => navigate("/productsToBring")}
             className="border p-2 rounded-[10px] text-[18px] bg-[#006400] text-white font-bold "
           >
             ჩანაწერები

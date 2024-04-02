@@ -10,6 +10,7 @@ const useAxios = () => {
   const postData = async (url: string, data: object) => {
     const token = localStorage.getItem("tokenShop");
     const header = { headers: { Authorization: token } };
+
     const api = await axios.post(`${backendUrl}/${url}`, data, header);
     return api.data;
   };
@@ -24,8 +25,14 @@ const useAxios = () => {
     const header = { headers: { Authorization: token } };
     await axios.delete(`${backendUrl}/${url}`, header);
   };
+  const patchRequest = async (url: string, data: object) => {
+    const token = localStorage.getItem("tokenShop");
+    const header = { headers: { Authorization: token } };
+    const api = await axios.patch(`${backendUrl}/${url}`, data, header);
+    return api.data;
+  };
 
-  return { postData, getData, deleteData };
+  return { postData, getData, deleteData, patchRequest };
 };
 
 export default useAxios;
