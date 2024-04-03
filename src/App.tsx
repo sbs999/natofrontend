@@ -26,7 +26,7 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem("tokenShop")) {
+    if (localStorage.getItem("mixToken")) {
       dispatch(fetchPersons({}));
       dispatch(getHistoryPersons({}));
     }
@@ -34,14 +34,14 @@ function App() {
   // auth
 
   useEffect(() => {
-    if (localStorage.getItem("tokenShop")) {
+    if (localStorage.getItem("mixToken")) {
       dispatch(login());
     } else {
       dispatch(logOut());
     }
   }, []);
 
-  const authCheck = localStorage.getItem("tokenShop") && userStatus;
+  const authCheck = localStorage.getItem("mixToken") && userStatus;
 
   return (
     <div className="mb-[10px]">

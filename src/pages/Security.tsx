@@ -20,7 +20,7 @@ const Security = () => {
   const submitHandler = async (values: { password: string }) => {
     try {
       const api = await postData(`signIn`, values);
-      localStorage.setItem("tokenShop", api.token);
+      localStorage.setItem("mixToken", api.token);
       dispatch(login());
       navigate("/");
     } catch (error) {
@@ -29,7 +29,7 @@ const Security = () => {
     }
 
     setTimeout(() => {
-      localStorage.removeItem("tokenShop");
+      localStorage.removeItem("mixToken");
       dispatch(logOut());
       navigate("/");
     }, 3600000);

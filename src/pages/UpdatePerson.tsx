@@ -47,7 +47,7 @@ const UpdatePerson = () => {
     surname: string;
     money: number;
   }) => {
-    if (!localStorage.getItem("tokenShop")) {
+    if (!localStorage.getItem("mixToken")) {
       dispatch(logOut());
       navigate("/");
       toast.error("პაროლი შეიყვანეთ!");

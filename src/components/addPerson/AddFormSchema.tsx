@@ -43,7 +43,7 @@ const AddFormSchema: React.FC<{
   const [submitStatus, setSubmitStatus] = useState(false);
 
   const submitHandler = async (values: PersonType) => {
-    if (!localStorage.getItem("tokenShop")) {
+    if (!localStorage.getItem("mixToken")) {
       dispatch(logOut());
       navigate("/");
       toast.error("პაროლი შეიყვანეთ!");

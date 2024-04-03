@@ -26,7 +26,7 @@ const EachPersonForm: React.FC<{ id: string }> = ({ id }) => {
     status: string;
     money: string;
   }) => {
-    if (!localStorage.getItem("tokenShop")) {
+    if (!localStorage.getItem("mixToken")) {
       dispatch(logOut());
       navigate("/");
       toast.error("პაროლი შეიყვანეთ!");
