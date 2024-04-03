@@ -14,6 +14,7 @@ import { updateProduct } from "../../store/productsToBring/products";
 import { ProductStatuses } from "../../constants/product-statuses.constants";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { toast } from "react-toastify";
 
 const ProductList = ({
   categories,
@@ -121,6 +122,21 @@ const ProductList = ({
     setState(result);
   }, [search, category, filterLocations]);
 
+  const copyProductsOnClipboard = () => {
+    const productNames = state
+      .map((product, index) => `${index + 1}) ${product.name}`)
+      .join("\n");
+    navigator.clipboard.writeText(productNames).then(
+      () => {
+        // You can implement more sophisticated feedback here, maybe using a toast notification
+        toast.success("წარმატებით დაკოპირდა.");
+      },
+      (err) => {
+        toast.error("ტექსტი ვერ დაკოპირდა.");
+      }
+    );
+  };
+
   return (
     <div>
       <div>
@@ -176,7 +192,14 @@ const ProductList = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 p-4">
+        <p
+          onClick={copyProductsOnClipboard}
+          className="text-right w-[95%] mt-2 text-[15px]"
+        >
+          პროდუქტების დაკოპირება
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 px-4 mt-1">
           {state.map((product) => (
             <div
               key={product._id}
