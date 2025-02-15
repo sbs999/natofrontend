@@ -16,6 +16,8 @@ export const ActiveProducts = () => {
     (state) => state.productPurchaseLocations
   );
 
+  console.log(1);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
