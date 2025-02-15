@@ -27,18 +27,20 @@ const ProductList = ({
   products: IProductData[];
   productStatus: ProductStatuses;
 }) => {
+  // These IDs represent the book categories.
+  const bookCategoriesIds = [
+    "662a93bc4d8dfe3bc20262db",
+    "660c674c1d5b073926976c2b",
+  ];
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<{
     label: string;
     value: string;
-  } | null>();
+  } | null>(null);
   const [filterLocations, setFilterLocations] = useState<
-    | {
-        label: string;
-        value: string;
-      }[]
-    | []
+    { label: string; value: string }[]
   >([]);
+  const [withoutBooks, setWithoutBooks] = useState(false);
   const [state, setState] = useState(products);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const navigate = useNavigate();
@@ -48,6 +50,7 @@ const ProductList = ({
     setSearch("");
     setCategory(null);
     setFilterLocations([]);
+    setWithoutBooks(false);
   };
 
   const deleteProductHandle = async (id: string) => {
@@ -58,7 +61,6 @@ const ProductList = ({
         updateData: { status: ProductStatuses.REMOVED },
       })
     );
-
     setSelectedProduct(null);
   };
 
@@ -70,7 +72,6 @@ const ProductList = ({
         updateData: { status: ProductStatuses.BROUGHT },
       })
     );
-
     setSelectedProduct(null);
   };
 
@@ -82,7 +83,6 @@ const ProductList = ({
         updateData: { status: ProductStatuses.ACTIVE },
       })
     );
-
     setSelectedProduct(null);
   };
 
@@ -100,13 +100,12 @@ const ProductList = ({
     }
 
     if (filterLocations.length) {
-      result = result.filter(
-        (product) =>
-          filterLocations.filter((locationData) =>
-            product.purchaseLocations.some(
-              (location) => location?._id === locationData.value
-            )
-          ).length
+      result = result.filter((product) =>
+        filterLocations.some((locationData) =>
+          product.purchaseLocations.some(
+            (location) => location?._id === locationData.value
+          )
+        )
       );
     }
 
@@ -119,8 +118,15 @@ const ProductList = ({
       );
     }
 
+    // When the checkbox is selected, filter out products whose category ID is in bookCategoriesIds.
+    if (withoutBooks) {
+      result = result.filter(
+        (product) => !bookCategoriesIds.includes(product?.category?._id)
+      );
+    }
+
     setState(result);
-  }, [search, category, filterLocations]);
+  }, [search, category, filterLocations, withoutBooks, products]);
 
   const copyProductsOnClipboard = () => {
     const productNames = state
@@ -128,7 +134,6 @@ const ProductList = ({
       .join("\n");
     navigator.clipboard.writeText(productNames).then(
       () => {
-        // You can implement more sophisticated feedback here, maybe using a toast notification
         toast.success("წარმატებით დაკოპირდა.");
       },
       (err) => {
@@ -145,7 +150,7 @@ const ProductList = ({
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border-[1px]  px-[10px] py-[10px] w-[100%] rounded-[10px] border-black"
+            className="border-[1px] px-[10px] py-[10px] w-[100%] rounded-[10px] border-black"
             placeholder="გაფილტვრა"
           />
 
@@ -154,9 +159,9 @@ const ProductList = ({
             classNamePrefix="select"
             onChange={(categoryData) => setCategory(categoryData)}
             name="color"
-            options={categories.map((category) => ({
-              label: category.name,
-              value: category._id,
+            options={categories.map((cat) => ({
+              label: cat.name,
+              value: cat._id,
             }))}
             value={category}
             isClearable={true}
@@ -168,24 +173,36 @@ const ProductList = ({
             isMulti
             name="colors"
             id="ლოკაცია"
-            options={locations.map((category) => ({
-              label: category.name,
-              value: category._id,
+            options={locations.map((location) => ({
+              label: location.name,
+              value: location._id,
             }))}
-            className="basic-multi-select  mt-[5px]"
+            className="basic-multi-select mt-[5px]"
             classNamePrefix="select"
             placeholder="ლოკაცია"
-            onChange={(productPurchaseLocations) =>
-              setFilterLocations(productPurchaseLocations.map((data) => data))
+            onChange={(selectedLocations) =>
+              setFilterLocations(selectedLocations.map((data) => data))
             }
             value={filterLocations}
             styles={ReactSelectStyles}
           />
 
+          {/* Checkbox for filtering out products belonging to book categories */}
+          <div className="flex items-center mt-2">
+            <input
+              type="checkbox"
+              id="withoutBooks"
+              checked={withoutBooks}
+              onChange={(e) => setWithoutBooks(e.target.checked)}
+              className="mr-2"
+            />
+            <label htmlFor="withoutBooks">წიგნების გარეშე</label>
+          </div>
+
           <div>
             <p
               onClick={clearFilter}
-              className="text-[15px]  text-end mt-2 cursor-pointer text-gray-800 mr-1"
+              className="text-[15px] text-end mt-2 cursor-pointer text-gray-800 mr-1"
             >
               ფილტრის გასუფთავება
             </p>
