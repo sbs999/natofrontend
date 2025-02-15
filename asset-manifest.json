@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/natofrontend/static/css/main.324282fb.css",
-    "main.js": "/natofrontend/static/js/main.6f350489.js",
+    "main.css": "/natofrontend/static/css/main.02569ada.css",
+    "main.js": "/natofrontend/static/js/main.e697e708.js",
     "index.html": "/natofrontend/index.html",
-    "main.324282fb.css.map": "/natofrontend/static/css/main.324282fb.css.map",
-    "main.6f350489.js.map": "/natofrontend/static/js/main.6f350489.js.map"
+    "main.02569ada.css.map": "/natofrontend/static/css/main.02569ada.css.map",
+    "main.e697e708.js.map": "/natofrontend/static/js/main.e697e708.js.map"
   },
   "entrypoints": [
-    "static/css/main.324282fb.css",
-    "static/js/main.6f350489.js"
+    "static/css/main.02569ada.css",
+    "static/js/main.e697e708.js"
   ]
 }
