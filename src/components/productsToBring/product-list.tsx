@@ -32,6 +32,8 @@ const ProductList = ({
     "662a93bc4d8dfe3bc20262db",
     "660c674c1d5b073926976c2b",
   ];
+
+  // Existing States
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<{
     label: string;
@@ -43,6 +45,10 @@ const ProductList = ({
   const [withoutBooks, setWithoutBooks] = useState(false);
   const [state, setState] = useState(products);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
+
+  // New state for sorting based on creation timestamp.
+  const [sortByTimestamp, setSortByTimestamp] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -51,6 +57,7 @@ const ProductList = ({
     setCategory(null);
     setFilterLocations([]);
     setWithoutBooks(false);
+    setSortByTimestamp(false);
   };
 
   const deleteProductHandle = async (id: string) => {
@@ -118,15 +125,31 @@ const ProductList = ({
       );
     }
 
-    // When the checkbox is selected, filter out products whose category ID is in bookCategoriesIds.
+    // Filter out products whose category ID is in bookCategoriesIds.
     if (withoutBooks) {
       result = result.filter(
         (product) => !bookCategoriesIds.includes(product?.category?._id)
       );
     }
 
+    // If sortByTimestamp is checked, sort the products based on their creation timestamp (newest first).
+    if (sortByTimestamp) {
+      result = [...result].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+    }
+
     setState(result);
-  }, [search, category, filterLocations, withoutBooks, products]);
+  }, [
+    search,
+    category,
+    filterLocations,
+    withoutBooks,
+    sortByTimestamp,
+    products,
+    bookCategoriesIds,
+  ]);
 
   const copyProductsOnClipboard = () => {
     const productNames = state
@@ -197,6 +220,18 @@ const ProductList = ({
               className="mr-2"
             />
             <label htmlFor="withoutBooks">წიგნების გარეშე</label>
+          </div>
+
+          {/* New Checkbox for sorting products based on create timestamp */}
+          <div className="flex items-center mt-2">
+            <input
+              type="checkbox"
+              id="sortByTimestamp"
+              checked={sortByTimestamp}
+              onChange={(e) => setSortByTimestamp(e.target.checked)}
+              className="mr-2"
+            />
+            <label htmlFor="sortByTimestamp">თარიღით სორტირება</label>
           </div>
 
           <div>
@@ -297,7 +332,7 @@ const ProductModal = ({
       onClick={onClose}
     >
       <div
-        className="relative top-20 mx-auto  px-3 border shadow-lg rounded-md bg-white w-11/12 md:w-9/12 lg:w-5/6 xl:w-4/5 2xl:w-3/4"
+        className="relative top-20 mx-auto px-3 border shadow-lg rounded-md bg-white w-11/12 md:w-9/12 lg:w-5/6 xl:w-4/5 2xl:w-3/4"
         style={{ maxWidth: "90%" }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -316,19 +351,19 @@ const ProductModal = ({
         </button>
 
         <div className="mt-7">
-          <p className=" leading-6 font-medium text-gray-900 text-center text-[21px]">
+          <p className="leading-6 font-medium text-gray-900 text-center text-[21px]">
             {product.name}
           </p>
           <div className="mt-2 py-3 ">
             {product.description && (
-              <p className=" text-gray-500 text-[17px]">
-                <span className="font-medium text-gray-900 ">აღწერა: </span>
+              <p className="text-gray-500 text-[17px]">
+                <span className="font-medium text-gray-900">აღწერა: </span>
                 {product.description}.
               </p>
             )}
             {product.category ? (
               <p className="text-gray-500 text-[17px]">
-                <span className="font-medium text-gray-900 ">კატეგორია: </span>
+                <span className="font-medium text-gray-900">კატეგორია: </span>
                 {product.category.name}.
               </p>
             ) : (
@@ -336,8 +371,8 @@ const ProductModal = ({
             )}
 
             {product.purchaseLocations?.length ? (
-              <p className=" text-gray-500 text-[17px]">
-                <span className="font-medium text-gray-900 ">ლოკაციები: </span>
+              <p className="text-gray-500 text-[17px]">
+                <span className="font-medium text-gray-900">ლოკაციები: </span>
                 {product.purchaseLocations
                   .map((location) => location.name)
                   .join(", ")}
