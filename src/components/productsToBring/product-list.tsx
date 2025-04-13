@@ -148,7 +148,6 @@ const ProductList = ({
     withoutBooks,
     sortByTimestamp,
     products,
-    bookCategoriesIds,
   ]);
 
   const copyProductsOnClipboard = () => {
@@ -381,6 +380,13 @@ const ProductModal = ({
             ) : (
               ""
             )}
+
+            <p className="text-gray-500 text-[17px]">
+              <span className="font-medium text-gray-900">
+                დამატების თარიღი:{" "}
+              </span>
+              {new Date(product?.createdAt).toLocaleDateString("en-GB")}
+            </p>
 
             <div className="mt-4 relative">
               {product.imageUrls && product.imageUrls.length > 0 ? (
