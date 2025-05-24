@@ -20,6 +20,7 @@ import ActiveProducts from "./pages/productsToBring/ActiveProducts";
 import EditProduct from "./pages/productsToBring/EditProduct";
 import DoneProducts from "./pages/productsToBring/doneProducts";
 import RemoveProducts from "./pages/productsToBring/removeProducts";
+import Books from "./pages/productsToBring/Books";
 
 function App() {
   const { userStatus } = useAppSelector((state) => state.persons);
@@ -87,6 +88,10 @@ function App() {
         <Route
           path="/productsToBring/active-products"
           element={authCheck ? <ActiveProducts /> : <Security />}
+        />
+        <Route
+          path="/productsToBring/books"
+          element={authCheck ? <Books /> : <Security />}
         />
         <Route
           path="/productsToBring/edit/:productId"

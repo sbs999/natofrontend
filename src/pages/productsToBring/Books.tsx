@@ -1,26 +1,24 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/reduxStore";
-import { ProductStatuses } from "../../constants/product-statuses.constants";
-import { getCategories } from "../../store/productsToBring/categories";
-import { getPurchaseLocations } from "../../store/productsToBring/locations";
-import ProductList from "../../components/productsToBring/product-list";
-import { getProducts } from "../../store/productsToBring/products";
+import { ProductTypes } from "../../constants/productTypes.constants";
 import { bookCategoriesIds } from "../../constants/book-categories.constants";
+import { getProducts } from "../../store/productsToBring/products";
+import { getPurchaseLocations } from "../../store/productsToBring/locations";
+import { getCategories } from "../../store/productsToBring/categories";
+import { ProductStatuses } from "../../constants/product-statuses.constants";
+import ProductList from "../../components/productsToBring/product-list";
 
-export const ActiveProducts = () => {
+export const Books = () => {
   const navigate = useNavigate();
 
   const { activeProducts } = useAppSelector((state) => state.products);
   const { categories } = useAppSelector((state) => state.ProductCategories);
-  const { locations } = useAppSelector(
-    (state) => state.productPurchaseLocations
+  const books = activeProducts?.filter((product) =>
+    bookCategoriesIds.includes(product?.category?._id)
   );
-  const noneBookProducts = activeProducts?.filter(
-    (product) => !bookCategoriesIds.includes(product?.category?._id)
-  );
-  const noneBookCategories = categories.filter(
-    (category) => !bookCategoriesIds.includes(category._id)
+  const bookCategories = categories.filter((category) =>
+    bookCategoriesIds.includes(category._id)
   );
 
   const dispatch = useAppDispatch();
@@ -34,6 +32,7 @@ export const ActiveProducts = () => {
   return (
     <div>
       <div className="flex justify-between items-center">
+        {/*  */}
         <button
           onClick={() => navigate("/productsToBring")}
           type="submit"
@@ -41,10 +40,12 @@ export const ActiveProducts = () => {
         >
           უკან გასვლა
         </button>
+        {/*  */}
 
+        {/*  */}
         <p
           onClick={() => {
-            navigate("/productsToBring/add");
+            navigate(`/productsToBring/add/?type=${ProductTypes.BOOK}`);
           }}
           className="mr-[10px]  pt-3 cursor-pointer"
         >
@@ -52,14 +53,17 @@ export const ActiveProducts = () => {
         </p>
       </div>
 
+      {/*  */}
+
       <ProductList
         productStatus={ProductStatuses.ACTIVE}
-        products={noneBookProducts}
-        categories={noneBookCategories}
-        locations={locations}
+        products={books}
+        categories={bookCategories}
+        locations={[]}
+        productType={ProductTypes.BOOK}
       />
     </div>
   );
 };
 
-export default ActiveProducts;
+export default Books;

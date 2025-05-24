@@ -26,6 +26,12 @@ const ProductsToBringIntro = () => {
         >
           მოსატანი პროდუქტები
         </button>
+        <button
+          onClick={() => navigate("/productsToBring/books")}
+          className="mb-2 text-[17px] font-medium text-gray-900 rounded-lg bg-[#f0f0f0] hover:bg-[#dddddd] p-[12px] w-full text-left text-[22px]"
+        >
+          წიგნები
+        </button>
 
         <button
           onClick={() => navigate("/productsToBring/categories")}

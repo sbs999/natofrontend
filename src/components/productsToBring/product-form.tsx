@@ -20,12 +20,14 @@ import { toast } from "react-toastify";
 import { productFormValidateSchema } from "../../validations";
 import { extractKeyFromUrl } from "../../helper";
 import TextArea from "../../Reusable/form/textArea";
+import { ProductTypes } from "../../constants/productTypes.constants";
 
 export const ProductForm = ({
   categories,
   locations,
   product,
   onSubmit,
+  productType,
 }: {
   categories: ICategoryData[];
   locations: IPurchaseLocationData[];
@@ -33,6 +35,7 @@ export const ProductForm = ({
   onSubmit: (
     credentials: ProductFormSubmitCredentials
   ) => Promise<{ payload: object }>;
+  productType?: ProductTypes;
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<(Blob | string)[]>(
     product?.imageUrls || []
@@ -136,7 +139,11 @@ export const ProductForm = ({
     if (result.payload) {
       toast.success("წარმატებით აიტვირთა პროდუქტი.");
       if (!product) {
-        navigate("/productsToBring/active-products");
+        if (productType === ProductTypes.BOOK) {
+          navigate("/productsToBring/books");
+        } else {
+          navigate("/productsToBring/active-products");
+        }
       } else {
         navigate(-1);
       }
@@ -170,37 +177,39 @@ export const ProductForm = ({
             placeholder="აღწერა"
           />
 
-          <div>
-            <label className="text-[19px]" htmlFor={"ადგილი"}>
-              ადგილი:
-            </label>
-            <ReactSelect
-              isMulti
-              defaultValue={
-                product?.purchaseLocations
-                  ? product.purchaseLocations.map((location) => ({
-                      label: location.name,
-                      value: location._id,
-                    }))
-                  : null
-              }
-              name="colors"
-              id="ადგილი"
-              options={locations.map((location) => ({
-                label: location.name,
-                value: location._id,
-              }))}
-              className="basic-multi-select mb-[25px] mt-[5px]"
-              classNamePrefix="select"
-              placeholder="ადგილი"
-              onChange={(productPurchaseLocations) =>
-                setProductPurchaseLocations(
-                  productPurchaseLocations.map((data) => data.value)
-                )
-              }
-              styles={ReactSelectStyles}
-            />
-          </div>
+          {locations?.length ? (
+            <div>
+              <label className="text-[19px]" htmlFor={"ადგილი"}>
+                ადგილი:
+              </label>
+              <ReactSelect
+                isMulti
+                defaultValue={
+                  product?.purchaseLocations
+                    ? product.purchaseLocations.map((location) => ({
+                        label: location.name,
+                        value: location._id,
+                      }))
+                    : null
+                }
+                name="colors"
+                id="ადგილი"
+                options={locations.map((location) => ({
+                  label: location.name,
+                  value: location._id,
+                }))}
+                className="basic-multi-select mb-[25px] mt-[5px]"
+                classNamePrefix="select"
+                placeholder="ადგილი"
+                onChange={(productPurchaseLocations) =>
+                  setProductPurchaseLocations(
+                    productPurchaseLocations.map((data) => data.value)
+                  )
+                }
+                styles={ReactSelectStyles}
+              />
+            </div>
+          ) : null}
 
           <div>
             <label className="text-[19px]" htmlFor={"ადგილი"}>

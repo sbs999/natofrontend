@@ -1,13 +1,19 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/reduxStore";
 import { getCategories } from "../../store/productsToBring/categories";
 import { getPurchaseLocations } from "../../store/productsToBring/locations";
 import { ProductForm } from "../../components/productsToBring";
 import { createProduct } from "../../store/productsToBring/products";
 import { ProductFormSubmitCredentials } from "../../interfaces";
+import { ProductTypes } from "../../constants/productTypes.constants";
+import { bookCategoriesIds } from "../../constants/book-categories.constants";
 
 export const AddProduct = () => {
+  const [searchParams] = useSearchParams();
+  const productType = searchParams.get("type");
+  const isProductBook = productType === ProductTypes.BOOK;
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { categories } = useAppSelector((state) => state.ProductCategories);
@@ -38,8 +44,17 @@ export const AddProduct = () => {
       <div className="mx-auto w-[90%] mt-[20px]">
         <ProductForm
           onSubmit={onSubmit}
-          categories={categories}
-          locations={locations}
+          categories={
+            isProductBook
+              ? categories.filter((category) =>
+                  bookCategoriesIds.includes(category._id)
+                )
+              : categories.filter(
+                  (category) => !bookCategoriesIds.includes(category._id)
+                )
+          }
+          locations={isProductBook ? [] : locations}
+          productType={isProductBook ? ProductTypes.BOOK : undefined}
         />
       </div>
     </div>
