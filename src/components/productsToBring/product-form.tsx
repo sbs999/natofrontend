@@ -230,13 +230,14 @@ export const ProductForm = ({
               onChange={(categoryData) =>
                 setCategory(categoryData ? categoryData.value : null)
               }
-              name="color"
+              name="category"
               options={categories.map((category) => ({
                 label: category.name,
                 value: category._id,
               }))}
               placeholder="კატეგორია"
               styles={ReactSelectStyles}
+              required={productType === ProductTypes.BOOK}
             />
           </div>
 

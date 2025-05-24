@@ -104,6 +104,7 @@ export const EditProduct = () => {
           }
           locations={isProductBook ? [] : locations}
           product={product}
+          productType={isProductBook ? ProductTypes.BOOK : undefined}
         />
       </div>
     </div>
