@@ -5,6 +5,7 @@ import historySlice from "./history";
 import productsPurchaseLocationSlice from "./productsToBring/locations";
 import productCategories from "./productsToBring/categories";
 import products from "./productsToBring/products";
+import productWithPrices from "./productsWithPrices";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     productPurchaseLocations: productsPurchaseLocationSlice,
     ProductCategories: productCategories,
     products,
+    productWithPrices: productWithPrices,
   },
 });
 

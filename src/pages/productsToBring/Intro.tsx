@@ -14,12 +14,12 @@ const ProductsToBringIntro = () => {
       </button>
 
       <div className="flex flex-col w-[90%] mx-auto mt-[50px]">
-        <button
+        {/* <button
           onClick={() => navigate("/productsToBring/add")}
           className="mb-2 text-[17px] font-medium text-gray-900 rounded-lg bg-[#f0f0f0] hover:bg-[#dddddd] p-[12px] w-full text-left text-[22px]"
         >
           პროდუქტის დამატება
-        </button>
+        </button> */}
         <button
           onClick={() => navigate("/productsToBring/active-products")}
           className="mb-2 text-[17px] font-medium text-gray-900 rounded-lg bg-[#f0f0f0] hover:bg-[#dddddd] p-[12px] w-full text-left text-[22px]"
@@ -34,8 +34,15 @@ const ProductsToBringIntro = () => {
         </button>
 
         <button
+          onClick={() => navigate("/productsWithPrices")}
+          className="mb-2 mt-8 text-[17px] font-medium text-gray-900 rounded-lg bg-[#f0f0f0] hover:bg-[#dddddd] p-[12px] w-full text-left text-[22px]"
+        >
+          პროდუქტები და ფასები
+        </button>
+
+        <button
           onClick={() => navigate("/productsToBring/categories")}
-          className="mt-8 mb-2 text-[17px] font-medium text-gray-900 rounded-lg bg-[#f0f0f0] hover:bg-[#dddddd] p-[12px] w-full text-left text-[22px]"
+          className=" mb-2 text-[17px] font-medium text-gray-900 rounded-lg bg-[#f0f0f0] hover:bg-[#dddddd] p-[12px] w-full text-left text-[22px]"
         >
           კატეგორიები
         </button>

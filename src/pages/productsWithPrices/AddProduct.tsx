@@ -1,86 +1,87 @@
-import { useState } from "react";
-import {
-  ICategoryData,
-  IProductData,
-  IPurchaseLocationData,
-  ProductFormSubmitCredentials,
-  ProductsToBringFormValues,
-} from "../../interfaces";
+// src/pages/AddProductWithPrices.tsx
+import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
+import { useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+import { useFileUpload } from "../../helper/useFileUpload";
+import { useAppDispatch, useAppSelector } from "../../store/reduxStore";
+import {
+  addProductWithPrices,
+  CreateProductWithPricesCredentials,
+  IProductWithPricesData,
+} from "../../store/productsWithPrices";
+import { productFormValidateSchema } from "../../validations";
 import Input from "../../Reusable/form/input";
+import TextArea from "../../Reusable/form/textArea";
 import ReactSelect from "react-select";
 import { ReactSelectStyles } from "../../styles";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { productFormValidateSchema } from "../../validations";
-import TextArea from "../../Reusable/form/textArea";
-import { ProductTypes } from "../../constants/productTypes.constants";
-import { useFileUpload } from "../../helper/useFileUpload";
+import { getCategories } from "../../store/productsToBring/categories";
+import useAxios from "../../helper/useAxios";
 
-export const ProductForm = ({
-  categories,
-  locations,
-  product,
-  onSubmit,
-  productType,
-}: {
-  categories: ICategoryData[];
-  locations: IPurchaseLocationData[];
-  product?: IProductData;
-  onSubmit: (
-    credentials: ProductFormSubmitCredentials
-  ) => Promise<{ payload: object }>;
-  productType?: ProductTypes;
+export const AddProductWithPrices: React.FC = (data: {
+  product?: IProductWithPricesData;
 }) => {
-  const { uploadFileUrls, handleFileChange, selectedFiles, removeImage } =
-    useFileUpload({
-      selectedFiles: product?.imageUrls || [],
-      uploadFileUrls: product?.imageUrls || [],
-    });
-
-  const [category, setCategory] = useState<string | null>();
-  const [productPurchaseLocations, setProductPurchaseLocations] = useState<
-    string[]
-  >([]);
-  const [submitStatus, setSubmitStatus] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const {
+    selectedFiles,
+    uploadFileUrls,
+    submitStatus,
+    handleFileChange,
+    removeImage,
+  } = useFileUpload({
+    selectedFiles: [],
+    uploadFileUrls: [],
+  });
 
-  const submitHandler = async (values: ProductsToBringFormValues) => {
-    setSubmitStatus(true);
+  const { getData } = useAxios();
 
-    const result = await onSubmit({
-      ...values,
-      ...(category ? { category } : {}),
-      purchaseLocations: productPurchaseLocations,
-      imageUrls: uploadFileUrls,
-    });
-
-    if (result.payload) {
-      toast.success("წარმატებით აიტვირთა პროდუქტი.");
-      if (!product) {
-        if (productType === ProductTypes.BOOK) {
-          navigate("/productsToBring/books");
-        } else {
-          navigate("/productsToBring/active-products");
-        }
-      } else {
-        navigate(-1);
-      }
-    }
-    setSubmitStatus(false);
+  const { categories } = useAppSelector((state) => state.ProductCategories);
+  const [category, setCategory] = useState<string | undefined>();
+  const initialValues = {
+    name: data?.product?.name || "",
+    description: data?.product?.description || "",
   };
+
+  const onSubmit = async (values: typeof initialValues) => {
+    const credentials: CreateProductWithPricesCredentials = {
+      name: values.name,
+      description: values.description,
+      imageUrl: uploadFileUrls[0] || undefined,
+      category: category,
+    };
+
+    const action = await dispatch(addProductWithPrices(credentials));
+    if (addProductWithPrices.fulfilled.match(action)) {
+      toast.success("პროდუქტი დაემატა");
+      navigate("/productsWithPrices", { replace: true });
+      window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    if (!categories?.length) {
+      dispatch(getCategories({}));
+      getData("products-with-prices/ok");
+    }
+  }, []);
 
   return (
     <div className="mx-auto w-[90%] mt-[20px]">
-      <Formik
-        initialValues={{
-          name: product?.name || "",
-          description: product?.description || "",
-        }}
-        onSubmit={submitHandler}
-        validationSchema={productFormValidateSchema}
+      <button
+        onClick={() => navigate("/productsWithPrices", { replace: true })}
+        className="border-[1px] bg-[#3498db] p-[10px] rounded-[12px] text-white mb-[20px]"
       >
-        <Form>
+        უკან გასვლა
+      </button>
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={productFormValidateSchema}
+        onSubmit={onSubmit}
+      >
+        <Form className="space-y-4">
           <Input
             label="დასახელება"
             name="name"
@@ -88,47 +89,14 @@ export const ProductForm = ({
             type="text"
             placeholder="სახელი"
           />
+
           <TextArea
             label="აღწერა"
             name="description"
             id="description"
-            type="text"
             placeholder="აღწერა"
+            type="text"
           />
-
-          {locations?.length ? (
-            <div>
-              <label className="text-[19px]" htmlFor={"ადგილი"}>
-                ადგილი:
-              </label>
-              <ReactSelect
-                isMulti
-                defaultValue={
-                  product?.purchaseLocations
-                    ? product.purchaseLocations.map((location) => ({
-                        label: location.name,
-                        value: location._id,
-                      }))
-                    : null
-                }
-                name="colors"
-                id="ადგილი"
-                options={locations.map((location) => ({
-                  label: location.name,
-                  value: location._id,
-                }))}
-                className="basic-multi-select mb-[25px] mt-[5px]"
-                classNamePrefix="select"
-                placeholder="ადგილი"
-                onChange={(productPurchaseLocations) =>
-                  setProductPurchaseLocations(
-                    productPurchaseLocations.map((data) => data.value)
-                  )
-                }
-                styles={ReactSelectStyles}
-              />
-            </div>
-          ) : null}
 
           <div>
             <label className="text-[19px]" htmlFor={"ადგილი"}>
@@ -139,15 +107,15 @@ export const ProductForm = ({
               classNamePrefix="select"
               isClearable
               defaultValue={
-                product?.category
+                data?.product?.category
                   ? {
-                      label: product?.category.name,
-                      value: product?.category._id,
+                      label: data?.product?.category.name,
+                      value: data?.product?.category._id,
                     }
                   : null
               }
               onChange={(categoryData) =>
-                setCategory(categoryData ? categoryData.value : null)
+                setCategory(categoryData ? categoryData.value : undefined)
               }
               name="category"
               options={categories.map((category) => ({
@@ -156,10 +124,10 @@ export const ProductForm = ({
               }))}
               placeholder="კატეგორია"
               styles={ReactSelectStyles}
-              required={productType === ProductTypes.BOOK}
             />
           </div>
 
+          {/* File Upload Section */}
           <div className="mt-[5px] mb-[10px] flex justify-center items-center">
             <div className="w-[90%]">
               <div className="flex items-center justify-center w-full">
@@ -271,4 +239,4 @@ export const ProductForm = ({
   );
 };
 
-export default ProductForm;
+export default AddProductWithPrices;

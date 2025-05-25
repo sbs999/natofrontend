@@ -21,6 +21,9 @@ import EditProduct from "./pages/productsToBring/EditProduct";
 import DoneProducts from "./pages/productsToBring/doneProducts";
 import RemoveProducts from "./pages/productsToBring/removeProducts";
 import Books from "./pages/productsToBring/Books";
+import ProductsWithPricesList from "./pages/productsWithPrices/ProductsList";
+import AddProductWithPrices from "./pages/productsWithPrices/AddProduct";
+import ProductWithPricesDetail from "./pages/productsWithPrices/ProductDetails";
 
 function App() {
   const { userStatus } = useAppSelector((state) => state.persons);
@@ -104,6 +107,20 @@ function App() {
         <Route
           path="/productsToBring/remove-products"
           element={authCheck ? <RemoveProducts /> : <Security />}
+        />
+        <Route
+          path="/productsWithPrices"
+          element={<ProductsWithPricesList />}
+        />
+
+        <Route
+          path="/productsWithPrices/addProduct"
+          element={<AddProductWithPrices />}
+        />
+
+        <Route
+          path="/productsWithPrices/:productId"
+          element={<ProductWithPricesDetail />}
         />
       </Routes>
     </div>
