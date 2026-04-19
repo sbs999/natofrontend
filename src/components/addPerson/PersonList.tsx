@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { getHistoryPersons } from '../../store/history';
 import { useAppSelector,useAppDispatch } from '../../store/reduxStore';
+import CustomerMarkBadge from '../customer-mark/CustomerMarkBadge';
+import CustomerMarkModal from '../customer-mark/CustomerMarkModal';
+import { usePersonMarkModal } from '../../hooks/usePersonMarkModal';
 
 
 const PersonList = () => {
     const navigate = useNavigate();
+    const { open, ctx, openModal, closeModal } = usePersonMarkModal();
     const {historyPersons} = useAppSelector(state => state.history);
     const [state,setState] = useState(historyPersons);
     const dispatch = useAppDispatch();
@@ -39,13 +43,27 @@ const PersonList = () => {
          <div className='mt-[20px] grid place-content-center'>
          {state.map((d,index) => {
          return (
-           <div onClick={() => navigate(`/addPerson/${d._id}`)} key={index} className='bg-[#ecf0f1]  w-[280px]  text-[17px] mt-[5px] h-[50px] flex justify-center items-center cursor-pointer'>
+           <div key={index} className='mt-[5px] flex w-[280px] items-center gap-2 bg-[#ecf0f1] px-2 py-2 text-[17px]'>
+             <CustomerMarkBadge
+               mark={d.displayMark ?? d.adminMark}
+               onOpen={() => d._id && openModal(d._id, 'history')}
+             />
+             <div onClick={() => navigate(`/addPerson/${d._id}`)} className='flex min-h-[40px] flex-1 cursor-pointer items-center justify-center text-center'>
          {d.name}  {d.surname}
+         </div>
          </div>
        )
     })
 }
 </div>
+    {ctx && (
+      <CustomerMarkModal
+        open={open}
+        personId={ctx.personId}
+        source={ctx.source}
+        onClose={closeModal}
+      />
+    )}
     </div>
   )
 }

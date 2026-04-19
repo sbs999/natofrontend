@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { context } from '../store/store';
 import { useAppSelector } from "../store/reduxStore";
+import CustomerMarkBadge from "../components/customer-mark/CustomerMarkBadge";
+import CustomerMarkModal from "../components/customer-mark/CustomerMarkModal";
+import { usePersonMarkModal } from "../hooks/usePersonMarkModal";
 
 const Main = () => {
   const navigate = useNavigate();
   const { persons } = useAppSelector((state) => state.persons);
+  const { open, ctx, openModal, closeModal } = usePersonMarkModal();
   const [state, setState] = useState(persons);
   const [search, setSearch] = useState("");
 
@@ -64,15 +68,31 @@ const Main = () => {
         {state.map((d, index) => {
           return (
             <div
-              onClick={() => navigate(`/person/${d._id}`)}
               key={index}
-              className="bg-[#ecf0f1] text-center  w-[280px]  text-[17px] mt-[5px] h-[50px] flex justify-center items-center cursor-pointer"
+              className="mt-[5px] flex w-[280px] items-center gap-2 bg-[#ecf0f1] px-2 py-2 text-[17px]"
             >
-              {d.name} {d.surname} - {d.money}ლ
+              <CustomerMarkBadge
+                mark={d.displayMark ?? d.adminMark}
+                onOpen={() => openModal(d._id, "active")}
+              />
+              <div
+                onClick={() => navigate(`/person/${d._id}`)}
+                className="flex min-h-[40px] flex-1 cursor-pointer items-center justify-center text-center"
+              >
+                {d.name} {d.surname} - {d.money}ლ
+              </div>
             </div>
           );
         })}
       </div>
+      {ctx && (
+        <CustomerMarkModal
+          open={open}
+          personId={ctx.personId}
+          source={ctx.source}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 };

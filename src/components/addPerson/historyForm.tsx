@@ -4,10 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../store/reduxStore";
 import { toast } from "react-toastify";
 import useAxios from "../../helper/useAxios";
+import CustomerMarkBadge from "../customer-mark/CustomerMarkBadge";
+import CustomerMarkModal from "../customer-mark/CustomerMarkModal";
+import { usePersonMarkModal } from "../../hooks/usePersonMarkModal";
 
 const HistoryForm = () => {
   const { historyId } = useParams();
   const { historyPersons } = useAppSelector((state) => state.history);
+  const { open, ctx, openModal, closeModal } = usePersonMarkModal();
   const [state, setState] = useState(
     historyPersons.filter((p) => p._id?.toString() === historyId?.toString())
   );
@@ -53,7 +57,11 @@ const HistoryForm = () => {
         <p>შეცდომაა, არა არის ასეთი ადამიანი თავიდან სცადეთ!</p>
       ) : (
         <div className="max-w-[270px] mx-auto mt-[30px]">
-          <div className="grid place-content-center mb-[25px] text-[22px] ">
+          <div className="mb-[25px] flex items-center justify-center gap-2 text-[22px]">
+            <CustomerMarkBadge
+              mark={state[0].displayMark ?? state[0].adminMark}
+              onOpen={() => state[0]._id && openModal(state[0]._id, "history")}
+            />
             <p>ადამიანის დამატება</p>
           </div>
           <AddFormSchema
@@ -63,6 +71,14 @@ const HistoryForm = () => {
             info={state[0].info!}
             histroyStatus={{ status: "history", id: state[0]._id! }}
           />
+          {ctx && (
+            <CustomerMarkModal
+              open={open}
+              personId={ctx.personId}
+              source={ctx.source}
+              onClose={closeModal}
+            />
+          )}
         </div>
       )}
     </>

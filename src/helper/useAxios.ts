@@ -2,11 +2,15 @@ import React from "react";
 import axios from "axios";
 
 const useAxios = () => {
-  const backendUrl = "https://natobackend.onrender.com";
-  // process.env.NODE_ENV === "development"
-  //   ? process.env.REACT_APP_DEVELOPMENT_PORT
-  //   : process.env.REACT_APP_PRODUCTION_PORT;
-  // const backendUrl = "https://natobackend.onrender.com";
+  // Dev: REACT_APP_BACKEND_URL in .env.development → talk to API directly (no CRA proxy).
+  // Dev with empty URL → same-origin; setupProxy.js forwards to Render.
+  const devBase = (process.env.REACT_APP_BACKEND_URL || "")
+    .trim()
+    .replace(/\/$/, "");
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? devBase || ""
+      : "https://natobackend.onrender.com";
 
   const postData = async (url: string, data: object) => {
     const token = localStorage.getItem("mixToken");

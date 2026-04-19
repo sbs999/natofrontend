@@ -26,6 +26,9 @@ export interface Person {
   status: string;
   _id: string;
   updatedAt: string;
+  adminMark?: "" | "green" | "red";
+  /** Server: admin choice if they saved a mark; else issue-based auto red/green. */
+  displayMark?: "green" | "red";
 }
 
 export const getPersons = createAsyncThunk(
@@ -45,35 +48,7 @@ export const getPersons = createAsyncThunk(
 );
 
 interface CounterState {
-  persons:
-    | [
-        {
-          name: string;
-          updatedAt: string;
-          surname: string;
-          money: 0;
-          info: string;
-          mobNumber: string;
-          payment: [
-            {
-              status: string;
-              money: number;
-              sumOfMoney: number;
-              date: {
-                year: number;
-                month: number;
-                day: number;
-                hour: number;
-                minute: number;
-              };
-              info: string;
-            }
-          ];
-          status: string;
-          _id: string;
-        }
-      ]
-    | [];
+  persons: Person[] | [];
   userStatus: boolean;
 }
 

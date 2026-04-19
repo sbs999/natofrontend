@@ -33,7 +33,7 @@ const ManageProductsWithPricesList: React.FC = () => {
   useEffect(() => {
     dispatch(getProductsWithPrices());
     dispatch(getCategories({}));
-  }, []);
+  }, [dispatch]);
 
   // Apply filters
   useEffect(() => {

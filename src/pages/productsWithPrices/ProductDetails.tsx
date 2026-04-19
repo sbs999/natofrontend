@@ -26,7 +26,7 @@ const ProductWithPricesDetail: React.FC = () => {
     if (productId) {
       dispatch(getProductById(productId));
     }
-  }, [productId]);
+  }, [productId, dispatch]);
 
   const handleRemoveProduct = async () => {
     if (!product) {

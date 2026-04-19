@@ -1,19 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppSelector } from "../store/reduxStore";
+import { useAppSelector, useAppDispatch } from "../store/reduxStore";
 import EachPersonForm from "../components/EachPerson/EachPersonForm";
+import CustomerMarkBadge from "../components/customer-mark/CustomerMarkBadge";
+import CustomerMarkModal from "../components/customer-mark/CustomerMarkModal";
+import { usePersonMarkModal } from "../hooks/usePersonMarkModal";
+import useAxios from "../helper/useAxios";
+import { getPersons } from "../store/debts";
+import { toast } from "react-toastify";
 
 const EachPerson = () => {
   const { persons } = useAppSelector((state) => state.persons);
   const { personId } = useParams();
+  const dispatch = useAppDispatch();
+  const { deleteData } = useAxios();
+  const { open, ctx, openModal, closeModal } = usePersonMarkModal();
   const [state, setState] = useState(
     persons.filter((p) => p._id.toString() === personId?.toString())
   );
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleteSubmitting, setDeleteSubmitting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setState(persons.filter((p) => p._id === personId));
   }, [persons]);
+
+  const confirmDeletePerson = async () => {
+    if (!state[0]?._id) return;
+    setDeleteSubmitting(true);
+    try {
+      await deleteData(`deleteActivePerson/${state[0]._id}`);
+      dispatch(getPersons({}));
+      toast.success("წაშლილია.");
+      setDeleteConfirmOpen(false);
+      navigate("/");
+    } catch {
+      toast.error("შეცდომაა, სცადეთ თავიდან.");
+    } finally {
+      setDeleteSubmitting(false);
+    }
+  };
 
   return (
     <div>
@@ -26,12 +53,21 @@ const EachPerson = () => {
           უკან გასვლა
         </button>
         {state.length > 0 && (
-          <p
-            onClick={() => navigate(`/updatePersonInfo/${state[0]._id}`)}
-            className="mr-[10px] text-gray-400 underline cursor-pointer"
-          >
-            განახლება
-          </p>
+          <div className="mr-[10px] flex flex-col items-end gap-2 sm:flex-row sm:items-center">
+            <p
+              onClick={() => navigate(`/updatePersonInfo/${state[0]._id}`)}
+              className="text-gray-400 underline cursor-pointer"
+            >
+              განახლება
+            </p>
+            <button
+              type="button"
+              onClick={() => setDeleteConfirmOpen(true)}
+              className="rounded-[10px] border border-red-600 bg-red-500 px-3 py-2 text-sm font-semibold text-white"
+            >
+              წაშლა
+            </button>
+          </div>
         )}
       </div>
       {state.length <= 0 ? (
@@ -40,9 +76,15 @@ const EachPerson = () => {
         </div>
       ) : (
         <div className="mt-[30px] ">
-          <div className="flex flex-col items-center justify-center mx-[6px] text-center">
-            <div className="text-[22px]">
-              {state[0].name} {state[0].surname}
+          <div className="mx-[6px] flex flex-col items-center justify-center text-center">
+            <div className="flex items-center gap-2 text-[22px]">
+              <CustomerMarkBadge
+                mark={state[0].displayMark ?? state[0].adminMark}
+                onOpen={() => openModal(state[0]._id, "active")}
+              />
+              <span>
+                {state[0].name} {state[0].surname}
+              </span>
             </div>
             <div className="text-[22px] mt-[10px]">
               ვალი - {state[0].money}ლ{" "}
@@ -101,6 +143,50 @@ const EachPerson = () => {
                 </div>
               );
             })}
+          </div>
+          {ctx && (
+            <CustomerMarkModal
+              open={open}
+              personId={ctx.personId}
+              source={ctx.source}
+              onClose={closeModal}
+            />
+          )}
+        </div>
+      )}
+      {deleteConfirmOpen && state.length > 0 && (
+        <div
+          className="fixed inset-0 z-[190] flex items-center justify-center bg-black/50 p-4"
+          onClick={() => !deleteSubmitting && setDeleteConfirmOpen(false)}
+        >
+          <div
+            className="w-full max-w-sm rounded-xl bg-white p-5 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-center text-[17px] text-slate-800">
+              დარწმუნებული ხართ რომ გსურთ ამ ადამიანის წაშლა სიიდან?
+            </p>
+            <p className="mt-2 text-center text-sm text-slate-600">
+              {state[0].name} {state[0].surname} — ვალი {state[0].money}ლ
+            </p>
+            <div className="mt-5 flex justify-center gap-3">
+              <button
+                type="button"
+                disabled={deleteSubmitting}
+                onClick={() => setDeleteConfirmOpen(false)}
+                className="rounded-[10px] border border-slate-300 px-4 py-2 text-slate-700"
+              >
+                არა
+              </button>
+              <button
+                type="button"
+                disabled={deleteSubmitting}
+                onClick={confirmDeletePerson}
+                className="rounded-[10px] bg-red-600 px-4 py-2 font-semibold text-white disabled:opacity-60"
+              >
+                {deleteSubmitting ? "…" : "დიახ, წაშლა"}
+              </button>
+            </div>
           </div>
         </div>
       )}

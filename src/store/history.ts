@@ -2,30 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import useAxios from "../helper/useAxios";
 import { toast } from "react-toastify";
 
-interface Person {
+interface HistoryPersonRow {
   name: string;
   surname: string;
-  money: number;
   info: string;
   mobNumber: string;
-  payment: [
-    {
-      status: string;
-      money: number;
-      sumOfMoney: number;
-      date: {
-        year: number;
-        month: number;
-        day: number;
-        hour: number;
-        minute: number;
-      };
-      info: string;
-    }
-  ];
-  status: string;
   _id: string;
-  updatedAt: string;
+  adminMark?: "" | "green" | "red";
+  displayMark?: "green" | "red";
 }
 
 export const getHistoryPersons = createAsyncThunk(
@@ -34,8 +18,13 @@ export const getHistoryPersons = createAsyncThunk(
     const { getData } = useAxios();
     try {
       const api = await getData(`getPersonsFromHistory`);
-      const sortedPerson = api.persons.sort(function (a: Person, b: Person) {
-        return new Date(a.updatedAt) < new Date(b.updatedAt) ? 1 : -1;
+      const sortedPerson = api.persons.sort(function (
+        a: HistoryPersonRow & { updatedAt?: string },
+        b: HistoryPersonRow & { updatedAt?: string }
+      ) {
+        const da = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+        const db = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+        return da < db ? 1 : -1;
       });
       return sortedPerson;
     } catch {
@@ -46,18 +35,7 @@ export const getHistoryPersons = createAsyncThunk(
 );
 
 interface CounterState {
-  historyPersons:
-    | [
-        {
-          name: string;
-          updatedAt: string;
-          surname: string;
-          info: string;
-          mobNumber: string;
-          _id: string;
-        }
-      ]
-    | [];
+  historyPersons: HistoryPersonRow[] | [];
 }
 
 const initialState: CounterState = {
