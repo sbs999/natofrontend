@@ -249,17 +249,12 @@ const CustomerMarkModal: React.FC<Props> = ({
                           row.borrowDate,
                           row.borrowDateLabel
                         );
-                        const repayText = row.ongoing
-                          ? null
-                          : formatEpisodeDate(
-                              row.repayDate ?? undefined,
-                              row.repayDateLabel
-                            );
                         const daysLabel =
                           typeof row.daysBetween === "number" &&
                           Number.isFinite(row.daysBetween)
                             ? row.daysBetween
                             : null;
+                        const isHistory = source === "history";
                         return (
                           <li
                             key={`${row.borrowDateLabel}-${row.repayDateLabel}-${i}`}
@@ -272,18 +267,25 @@ const CustomerMarkModal: React.FC<Props> = ({
                             <span className="font-medium text-slate-900">
                               {borrowText}
                             </span>
-                            {" და "}
-                            {row.ongoing ? (
-                              <>ჯერ არ გადაუხდია</>
-                            ) : (
+                            {!isHistory ? (
                               <>
-                                გადაიხადა{" "}
-                                <span className="font-medium text-slate-900">
-                                  {repayText}
-                                </span>
+                                {" და "}
+                                {row.ongoing ? (
+                                  <>ჯერ არ გადაუხდია</>
+                                ) : (
+                                  <>
+                                    გადაიხადა{" "}
+                                    <span className="font-medium text-slate-900">
+                                      {formatEpisodeDate(
+                                        row.repayDate ?? undefined,
+                                        row.repayDateLabel
+                                      )}
+                                    </span>
+                                  </>
+                                )}
                               </>
-                            )}
-                            {daysLabel !== null ? (
+                            ) : null}
+                            {!isHistory && daysLabel !== null ? (
                               <span className="whitespace-nowrap text-slate-600">
                                 {" "}
                                 ({daysLabel} დღე)
